@@ -5,4 +5,4 @@ import os
 
 def segundo_nivel():
     esqueleto = Esqueleto()
-    zombie = Zombie()
+    #zombie = Zombie()

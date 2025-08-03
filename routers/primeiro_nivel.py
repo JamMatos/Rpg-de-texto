@@ -30,7 +30,7 @@ def primeiro_nivel(prota):
             dano_jogador = random.randint(prota.dano_min,prota.dano_max)
             zombie.vida -= dano_jogador
             print(f"Você causou um dano de {dano_jogador}.")
-            dano_zombie = random.randint(9,14)
+            dano_zombie = random.randint(zombie.dano_min,zombie.dano_max)
             prota.vida -= dano_zombie
             input(f"Zombie causou um dano de {dano_zombie}.")
         
@@ -45,7 +45,7 @@ def primeiro_nivel(prota):
 
         if prota.vida <= 0:
             input("Você falhou em salvar seu irmão.")
-            break
+            return None
 
         if zombie.vida <= 0:
             input("Você completou o primeiro nivel.")
