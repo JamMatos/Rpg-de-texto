@@ -1,5 +1,5 @@
 class Jogador:
-    def __init__(self, nome = "Fulano", vida = 100, energia = 100, dano ="3 - 5", dano_min=3, dano_max=5):
+    def __init__(self, nome = "Fulano", vida = 100, energia = 100, dano = "3 - 5", dano_min = 3, dano_max = 5):
         self._nome = nome
         self.vida = vida
         self.energia = energia

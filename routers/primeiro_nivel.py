@@ -1,11 +1,15 @@
 from models.monstros import Zombie
-#from routers.inicio import prota
+from models.item import Magico, Pocao
+from routers.fim_de_jogo import zerou_vida
 import random
 import os
 
 def primeiro_nivel(prota):
     zombie = Zombie()
     while zombie.vida > 0 and prota.vida > 0:
+        if prota.vida <= 0:
+            zerou_vida()
+
         os.system("cls")
         print("----- Nível 1 -----")
         print(f"Inimigo : {zombie}")
@@ -18,8 +22,10 @@ def primeiro_nivel(prota):
 
         print("---- CONTROLES ----")
         print("1 - Atacar com arma")
-        print("2 - Atacar com magia")
-        print("3 - Usar item")
+        if any(isinstance(item, Magico) and item.ativo for item in prota.inventario):
+            print("2 - Atacar com magia")
+        if any(isinstance(item, Pocao) and item.ativo for item in prota.inventario):
+            print("3 - Usar poção")
         try:
             acao = int(input("Digite o número da ação: "))
         except ValueError:
@@ -33,22 +39,12 @@ def primeiro_nivel(prota):
             dano_zombie = random.randint(zombie.dano_min,zombie.dano_max)
             prota.vida -= dano_zombie
             input(f"Zombie causou um dano de {dano_zombie}.")
-        
-        elif acao == 2:
-            input("Você não possui magias.")
-
-        elif acao == 3:
-            input("Você não possui itens.")
 
         else:
             input("Ação invalida.")
 
-        if prota.vida <= 0:
-            input("Você falhou em salvar seu irmão.")
-            return None
-
         if zombie.vida <= 0:
-            input("Você completou o primeiro nivel.")
+            input("Você completou o primeiro nível.")
             return 2
         
         os.system("cls")
