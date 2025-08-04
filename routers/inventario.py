@@ -1,13 +1,13 @@
+"""Arquivo para o sistema de inventário"""
+
 import os
 
+
 def show_inventario(inventario, prota):
+    """Função que abre o inventário"""
     retorno = 1
     while retorno != 0:
-        # 🔁 Resetar atributos antes de recalcular os efeitos dos equipamentos
-        prota.dano_min = prota.dano_base_min
-        prota.dano_max = prota.dano_base_max
-        prota.defesa = prota.defesa_base
-        prota.dano = f"{prota.dano_min} - {prota.dano_max}"
+        prota.recalcular_status()
 
         print("----- Seus dados -----")
         print(f"Seu dano: {prota.dano}.")
@@ -24,31 +24,25 @@ def show_inventario(inventario, prota):
 
                 if item.tipo == "Arma":
                     print("---- Arma ----")
-                    print(f"{idx}. {item.nome} - {item.descricao} - Dano de {item.dano_min} até {item.dano_max}  ({status})")
+                    print(
+                        f"{idx}. {item.nome} - {item.descricao} " \
+                        f" - Dano de {item.dano_min} até {item.dano_max}  ({status})"
+                    )
                 elif item.tipo == "Acessório":
                     print("\n---- Acessório ----")
-                    print(f"{idx}. {item.nome} - {item.descricao} - Benefício de {item.valor} {item.atributo} ({status})")
+                    print(
+                        f"{idx}. {item.nome} - {item.descricao} " \
+                        f"- Benefício de {item.valor} {item.atributo} ({status})"
+                    )
                 elif item.tipo == "Mágico":
                     print("---- Mágico ----")
-                    print(f"{idx}. {item.nome} - {item.descricao} - Dano de {item.valor} com custo de {item.custo} de energia {status}")
+                    print(
+                        f"{idx}. {item.nome} - {item.descricao} " \
+                        f"- Dano de {item.valor} com custo de {item.custo} de energia {status}"
+                    )
                 elif item.tipo == "Poção":
                     print("---- Poção ----")
                     print(f"{idx}. {item.nome} - {item.descricao} {status}")
-                
-            for item in inventario:
-                if item.ativo and item.tipo == "Arma":
-                    prota.dano_min += item.dano_min
-                    prota.dano_max += item.dano_max
-                elif item.ativo and item.tipo == "Acessório":
-                    if item.atributo == "defesa":
-                        prota.defesa += item.valor
-                    elif item.atributo == "vida":
-                        prota.vida += item.valor
-                    elif item.atributo == "dano":
-                        prota.dano_min += int(item.valor/2)
-                        prota.dano_max += int(item.valor/2)
-            prota.dano = f"{prota.dano_min} - {prota.dano_max}"
-
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")
         try:
@@ -58,8 +52,8 @@ def show_inventario(inventario, prota):
             continue
 
         if retorno == 0:
-            return item
-        
+            return
+
         # Verifica se retorno é um índice válido
         if 1 <= retorno <= len(inventario):
             item_escolhido = inventario[retorno - 1]
@@ -68,4 +62,3 @@ def show_inventario(inventario, prota):
             input("Número inválido. Pressione Enter para continuar.")
 
         os.system("cls")
-
