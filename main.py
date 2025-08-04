@@ -3,7 +3,7 @@ from routers.segundo_nivel import segundo_nivel
 from routers.inventario import show_inventario
 from routers.fim_de_jogo import final_do_jogo
 from models.jogador import Jogador
-from models.item_catalogo import espada_madeira, anel_rubi
+from models.item_catalogo import espada_madeira, anel_rubi, KingNote
 import os
 
 prota = Jogador()
@@ -16,10 +16,7 @@ while prota.vida > 0 :
 
     # Definindo mundo
     espada_madeira.ativo = True
-    prota.equipar_item(espada_madeira)
-    prota.dano = "5 - 15"
-    prota.dano_min += espada_madeira.dano_min
-    prota.dano_max += espada_madeira.dano_max
+    prota.armazenar_item(espada_madeira)
     nivel = 1
 
     os.system("cls")
@@ -28,14 +25,16 @@ while prota.vida > 0 :
         nivel = primeiro_nivel(prota)
         if prota.vida <= 0:
             break
-
+    
+    input("Você encontrou um anel de rubi.")
     anel_rubi.ativo = True
-    prota.equipar_item(anel_rubi)
+    prota.armazenar_item(anel_rubi)
+
     inv = input("Antes de avançar deseja acessar o inventario? (S/N): ").lower()
     if inv == "s":
         input("Ok, acessando o inventário.")
         os.system("cls")
-        show_inventario(prota.inventario)
+        show_inventario(prota.inventario, prota)
     elif inv == "n":
         input("Ok, sem acessar o inventário.")
     while inv not in ["s","n"]:
@@ -44,7 +43,7 @@ while prota.vida > 0 :
         if inv == "s":
             input("Ok, acessando o inventário.")
             os.system("cls")
-            show_inventario(prota.inventario)
+            show_inventario(prota.inventario, prota)
         elif inv == "n":
             input("Ok, sem acessar o inventário.")
 

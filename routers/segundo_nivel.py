@@ -1,4 +1,6 @@
 from models.monstros import Zombie, Esqueleto
+from models.item import Magico, Pocao
+from routers.fim_de_jogo import zerou_vida
 
 import random
 import os
@@ -8,8 +10,11 @@ def segundo_nivel(prota):
     #zombie = Zombie()
 
     while esqueleto.vida > 0 and prota.vida > 0:
+        if prota.vida <= 0:
+            zerou_vida()
+
         os.system("cls")
-        print("----- Nível 1 -----")
+        print("----- Nível 2 -----")
         print(f"Inimigo : {esqueleto}")
         print(f"Vida: {esqueleto.vida}")
         print(f"Dano: {esqueleto.dano}\n")
@@ -20,8 +25,10 @@ def segundo_nivel(prota):
 
         print("---- CONTROLES ----")
         print("1 - Atacar com arma")
-        print("2 - Atacar com magia")
-        print("3 - Usar poção")
+        if any(isinstance(item, Magico) and item.ativo for item in prota.inventario):
+            print("2 - Atacar com magia")
+        if any(isinstance(item, Pocao) and item.ativo for item in prota.inventario):
+            print("3 - Usar poção")
 
         try:
             acao = int(input("Digite o número da ação: "))
@@ -48,7 +55,7 @@ def segundo_nivel(prota):
 
 
         if esqueleto.vida <= 0:
-            input("Você completou o primeiro nível.")
+            input("Você completou o segundo nível.")
             return 2
         
         os.system("cls")
