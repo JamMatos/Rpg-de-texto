@@ -35,14 +35,14 @@ def show_inventario(inventario, prota):
                         f"- Benefício de {item.valor} {item.atributo} ({status})"
                     )
                 elif item.tipo == "Mágico":
-                    print("---- Mágico ----")
+                    print("\n---- Mágico ----")
                     print(
                         f"{idx}. {item.nome} - {item.descricao} " \
-                        f"- Dano de {item.valor} com custo de {item.custo} de energia {status}"
+                        f"- Dano de {item.valor} com custo de {item.custo} de energia ({status})"
                     )
                 elif item.tipo == "Poção":
-                    print("---- Poção ----")
-                    print(f"{idx}. {item.nome} - {item.descricao} {status}")
+                    print("\n---- Poção ----")
+                    print(f"{idx}. {item.nome} - {item.descricao} ({status})")
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")
         try:
@@ -62,3 +62,22 @@ def show_inventario(inventario, prota):
             input("Número inválido. Pressione Enter para continuar.")
 
         os.system("cls")
+
+def acessar_inventario(prota):
+    "Função que pergunta se desejar acessar o inventário."
+    inv = input("Antes de avançar deseja acessar o inventário? (S/N): ").lower()
+    if inv == "s":
+        input("Ok, acessando o inventário.")
+        os.system("cls")
+        show_inventario(prota.inventario, prota)
+    elif inv == "n":
+        input("Ok, sem acessar o inventário.")
+    while inv not in ["s", "n"]:
+        print("Entrada inválida. Digite S ou N.")
+        inv = input("Deseja acessar o inventário? (S/N): ").lower()
+        if inv == "s":
+            input("Ok, acessando o inventário.")
+            os.system("cls")
+            show_inventario(prota.inventario, prota)
+        elif inv == "n":
+            input("Ok, sem acessar o inventário.")

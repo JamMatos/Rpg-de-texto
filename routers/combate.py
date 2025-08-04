@@ -29,7 +29,8 @@ def controles(prota, inimigo, nivel:int):
         input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")
 
     if acao == 2 and magia:
-        magias_disponiveis = [item for item in prota.inventario if isinstance(item, Magico) and item.ativo]
+        magias_disponiveis = [item for item in prota.inventario \
+        if isinstance(item, Magico) and item.ativo]
 
         print("\n --- Suas magias ativas ---")
         for idx, magia_item in enumerate(magias_disponiveis, start=1):
@@ -56,6 +57,30 @@ def controles(prota, inimigo, nivel:int):
         input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")
 
     if acao == 3 and pocao:
+        pocoes_disponiveis = [item for item in prota.inventario \
+        if isinstance(item, Pocao) and item.ativo]
+
+        print("\n --- Suas poçõess ativas ---")
+        for idx, pocoa_item in enumerate(pocoes_disponiveis, start=1):
+            print(f"{idx}. {pocoa_item.nome} - {pocoa_item.descricao}")
+            print(f"   ➤ {pocoa_item.atributo.capitalize()}: {pocoa_item.valor}")
+
+        try:
+            escolha = int(input("Escolha a poção que deseja usar: "))
+            pocoa_escolhida = pocoes_disponiveis[escolha - 1]
+        except (ValueError, IndexError):
+            input("Escolha inválida. Pressione Enter para continuar")
+            return
+
+        if pocoa_escolhida.atributo == "Dano":
+            inimigo.vida -= pocoa_escolhida.valor
+            print(f"\nVocê usou {pocoa_escolhida.nome} e causou {pocoa_escolhida.valor}" \
+            "de dano ao {inimigo.nome}.")
+        elif pocoa_escolhida.atributo == "Vida":
+            prota.vida += pocoa_escolhida.valor
+            print(f"\nVocê usou {pocoa_escolhida.nome} e causou {pocoa_escolhida.valor}" \
+            "de vida para você.")
+
         dano_inimigo = random.randint(inimigo.dano_min,inimigo.dano_max)
         prota.vida -= dano_inimigo
         input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")

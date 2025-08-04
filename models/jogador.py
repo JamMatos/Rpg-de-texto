@@ -1,4 +1,11 @@
 """Arquivo para a class do jogador"""
+# from enum import Enum
+
+# class Vida(Enum):
+#     '''Class para criar uma viagem da vida'''
+
+#     CHEIA = "♥"
+#     VAZIO = "♡"
 
 class Jogador:
     """Class do personagem jogavel principal."""

@@ -94,10 +94,21 @@ class Pocao(Item):
     Inputs:
     - Atributo: Qual efeito a poção produz;
     - Valor: Quantidade do atributo que a porção produz;
-    - Alvo: Indicar em quem usar a poção."""
+    - Alvo: Indicar em quem usar a poção;
+    - Quantidade: Quantidade do item para adicionar ao jogador."""
 
-    def __init__(self, nome, descricao, atributo, valor, alvo: Alvo, ativo=False):
+    def __init__(self, nome: str, descricao: str, atributo: str, valor: int,
+        alvo: Alvo, quantidade: int, ativo=False):
+
         self.atributo = atributo  # Cura, dano, paralisia
         self.valor = valor  # Quantidade que dá do seu atributo
         self.alvo = alvo  # Indica em quem usar a poção
+        self.quantidade = quantidade # Quantidade do item para adicionar ao jogador
         super().__init__(nome, descricao, "Porção", ativo)
+
+    def usar(self):
+        '''Função que utiliza da poção até a quantidade chegar a 0.'''
+        if self.quantidade > 0:
+            self.quantidade -= 1
+            return True
+        return False

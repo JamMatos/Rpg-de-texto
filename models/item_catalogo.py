@@ -1,7 +1,7 @@
 """Arquivo onde ficar os items para serem chamados."""
 
 # import random
-from models.item import Arma, Acessorio, Magico
+from models.item import Arma, Acessorio, Magico, Pocao
 
 espada_madeira = Arma("Espada de Madeira", "Uma espada velha de madeira", 2, 10)
 anel_rubi = Acessorio(
@@ -29,3 +29,10 @@ GoldRain = Magico(
 espada_fantasma = Arma(
     "Ectosword", "Uma lámina prateada imbuido com ectoplasma", 12, 20
 )
+pocao_vida_p = Pocao(
+    "Poção pequena de vida", 
+    "Um frasco cilindrico com um liquido vermelho",
+    "vida", 
+    15,
+    "Jogador",
+    3)

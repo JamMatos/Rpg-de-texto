@@ -1,11 +1,13 @@
-'''Arquivo com a primeira fase do jogo.'''
+"""Arquivo com a primeira fase do jogo."""
+
 import os
 from models.monstros import Zombie
 from routers.fim_de_jogo import zerou_vida
 from routers.combate import controles
 
-def primeiro_nivel(prota: object, nivel:int):
-    '''Função que rodar o primeiro nível do jogo.'''
+
+def primeiro_nivel(prota: object, nivel: int):
+    """Função que roda o primeiro nível do jogo."""
     zombie = Zombie()
     while zombie.vida > 0 and prota.vida > 0:
         if prota.vida <= 0:
@@ -21,5 +23,5 @@ def primeiro_nivel(prota: object, nivel:int):
         print(f"Vida: {prota.vida}")
         print(f"Dano: {prota.dano}\n")
 
-        novo_nivel:int = controles(prota, zombie, nivel)
+        novo_nivel: int = controles(prota, zombie, nivel)
     return novo_nivel
