@@ -5,6 +5,10 @@ import os
 
 def show_inventario(inventario, prota):
     """Função que abre o inventário"""
+    total_arma = 1
+    total_acessorio = 2
+    total_magico = 2
+
     retorno = 1
     while retorno != 0:
         prota.recalcular_status()
@@ -13,36 +17,53 @@ def show_inventario(inventario, prota):
         print(f"Seu dano: {prota.dano}.")
         print(f"Sua defesa: {prota.defesa}.")
         print(f"Sua vida: {prota.vida}.")
+        print("Você só pode equipar uma arma.")
+        print("Você só pode equipar até 2 itens acessórios.")
+        print("Você só pode equipar até 2 itens mágicos.")
         print()
 
         print("----- INVENTÁRIO -----")
         if not inventario:
             print("Seu inventário está vazio.")
         else:
-            for idx, item in enumerate(inventario, start=1):
-                status = "Equipado" if item.ativo else "Não equipado"
+            tipos = {
+                "Arma": [],
+                "Acessório": [],
+                "Mágico": [],
+                "Poção": [],
+            }
 
-                if item.tipo == "Arma":
-                    print("---- Arma ----")
-                    print(
-                        f"{idx}. {item.nome} - {item.descricao} " \
-                        f" - Dano de {item.dano_min} até {item.dano_max}  ({status})"
-                    )
-                elif item.tipo == "Acessório":
-                    print("\n---- Acessório ----")
-                    print(
-                        f"{idx}. {item.nome} - {item.descricao} " \
-                        f"- Benefício de {item.valor} {item.atributo} ({status})"
-                    )
-                elif item.tipo == "Mágico":
-                    print("\n---- Mágico ----")
-                    print(
-                        f"{idx}. {item.nome} - {item.descricao} " \
-                        f"- Dano de {item.valor} com custo de {item.custo} de energia ({status})"
-                    )
-                elif item.tipo == "Poção":
-                    print("\n---- Poção ----")
-                    print(f"{idx}. {item.nome} - {item.descricao} ({status})")
+            for idx, item in enumerate(inventario, start=1):
+                item.idx = idx  # Adiciona índice manualmente para poder reutilizar depois
+                tipos[item.tipo].append(item)
+
+            for tipo, itens in tipos.items():
+                if itens:
+                    print(f"\n---- {tipo} ----")
+                    for item in itens:
+                        status = "Equipado" if item.ativo else "Não equipado"
+                        if tipo == "Arma":
+                            print(
+                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"- Dano de {item.dano_min} até {item.dano_max} ({status})"
+                            )
+                        elif tipo == "Acessório":
+                            print(
+                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"- Benefício de {item.valor} {item.atributo} ({status})"
+                            )
+                        elif tipo == "Mágico":
+                            print(
+                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"- Dano de {item.valor} com custo de {item.custo} "
+                                f"de energia ({status})"
+                            )
+                        elif tipo == "Poção":
+                            print(
+                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"- Essa é uma poção para usar no {item.alvo} "
+                                f"causando o atributo de {item.atributo} "
+                                f"provocando uma quantidade de {item.valor} ({status})")
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")
         try:
@@ -54,9 +75,22 @@ def show_inventario(inventario, prota):
         if retorno == 0:
             return
 
-        # Verifica se retorno é um índice válido
         if 1 <= retorno <= len(inventario):
             item_escolhido = inventario[retorno - 1]
+            if not item_escolhido.ativo:
+                # Verifica limites antes de equipar
+                if item_escolhido.tipo == "Arma":
+                    if sum(1 for i in inventario if i.tipo == "Arma" and i.ativo) >= total_arma:
+                        input("Você já tem uma arma equipada. Desequipe uma para trocar.")
+                        continue
+                elif item_escolhido.tipo == "Acessório":
+                    if sum(1 for i in inventario if i.tipo == "Acessório" and i.ativo) >= total_acessorio:
+                        input("Você já tem 2 acessórios equipados. Desequipe um para trocar.")
+                        continue
+                elif item_escolhido.tipo == "Mágico":
+                    if sum(1 for i in inventario if i.tipo == "Mágico" and i.ativo) >= total_magico:
+                        input("Você já tem 2 itens mágicos equipados. Desequipe um para trocar.")
+                        continue
             item_escolhido.ativo = not item_escolhido.ativo
         else:
             input("Número inválido. Pressione Enter para continuar.")

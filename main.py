@@ -6,7 +6,7 @@ from routers.niveis.primeiro_nivel import primeiro_nivel
 from routers.niveis.segundo_nivel import segundo_nivel
 from routers.niveis.terceiro_nivel import terceiro_nivel
 from routers.inventario import acessar_inventario
-from routers.fim_de_jogo import final_do_jogo
+from routers.fim_de_jogo import final_do_jogo, zerou_vida
 from routers.mapa import mostrar_mapa
 from models.jogador import Jogador
 from models.item_catalogo import espada_madeira, anel_rubi, KingNote, espada_fantasma, pocao_vida_p
@@ -26,21 +26,19 @@ while prota.vida > 0:
     )
     input("Ao entrar no covil dos monstros, você pega uma espada de madeira.")
 
-    mostrar_mapa(1)
-    input("")
-
     # Definindo mundo
-    espada_madeira.ativo = True
     prota.armazenar_item(espada_madeira)
 
+    mostrar_mapa(1)
+    input("Entrando na primeira câmara você se encontrar com seu primeiro inimigo, um Zumbi.")
     NIVEL = 1
 
     os.system("cls")
-    # Comentado para fazer o teste do inventario
     while NIVEL == 1:
         prota.dano = "5 - 15"
         NIVEL = primeiro_nivel(prota, NIVEL)
         if prota.vida <= 0:
+            zerou_vida()
             break
 
     if not conquistas["primeira_morte"]:
@@ -51,21 +49,26 @@ while prota.vida > 0:
 
     os.system("cls")
     input("Você encontrou um anel de rubi.")
-    anel_rubi.ativo = True
+
     prota.armazenar_item(anel_rubi)
 
     acessar_inventario(prota)
+
+    mostrar_mapa(2)
+    input("Entrando na câmara 2, prepare-se.")
 
     os.system("cls")
     while NIVEL == 2:
         print("Nivel 2")
         NIVEL = segundo_nivel(prota, NIVEL)
         if prota.vida <= 0:
+            zerou_vida()
             break
+    NIVEL = 2
 
-    KingNote.ativo = True
+    input("Você encontrou um livro magenta e alguns frascos com um liquido vermelho.")
+
     prota.armazenar_item(KingNote)
-    pocao_vida_p.ativo = True
     prota.armazenar_item(pocao_vida_p)
 
     acessar_inventario(prota)
@@ -74,11 +77,13 @@ while prota.vida > 0:
         print("Nível 3")
         NIVEL = terceiro_nivel(prota, NIVEL)
         if prota.vida <= 0:
+            zerou_vida()
             break
 
-    espada_fantasma.ativo = True
     prota.armazenar_item(espada_fantasma)
+    espada_fantasma.ativo = False
 
     acessar_inventario(prota)
 
     final_do_jogo()
+    break

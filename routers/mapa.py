@@ -1,18 +1,18 @@
 """Arquivo com o layout do mapa."""
 
 
-def mostrar_mapa(sala):
-    """Função que criar o mapa das salas"""
-    jo1 = ""
-    jo2 = ""
-    jo3 = ""
-    jo4 = ""
+def mostrar_mapa(sala:int):
+    """Mostra o mapa com o jogador na sala atual (1 a 4)"""
 
-    if sala == 1:
-        jo1 = "()"
-        jo2 = "  "
-        jo3 = "  "
-        jo4 = "  "
+    # Mapeia as salas para suas posições visuais
+    posicoes = {
+        1: ("()", "  ", "  ", "  "),
+        2: ("  ", "()", "  ", "  "),
+        3: ("  ", "  ", "()", "  "),
+        4: ("  ", "  ", "  ", "()"),
+    }
+
+    jo1, jo2, jo3, jo4 = posicoes.get(sala, ("  ", "  ", "  ", "  "))  # fallback se sala inválida
 
     mapa = [
         "|¯¯¯¯¯¯¯¯¯¯|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|",
@@ -24,5 +24,39 @@ def mostrar_mapa(sala):
         "|____  ____|___________________________|____________________|",
     ]
 
+    print("--- Onde você se encontrar é representado pelo símbolo () ---")
     for linha in mapa:
         print(linha)
+
+    salas = {
+        1: [
+            "\n---------------------- Primeira câmara ----------------------",
+            " /       |                                         |       \\ ",
+            "/        |                                         |  |¯¯|  \\",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |                                         |  |  |  |",
+            "|        |_________________________________________|  |  |  |",
+            "|        /                                         \\  |  |  |",
+            "|       /                                           \\ |  |  |",
+            "|      /                                             \\|  |  |",
+            "|     /                                               \\  |  |",
+            "|    /                                                 \\ |  |",
+            "|   /                                                   \\|  |",
+            "|  /                                                     \\  |",
+            "| /                                                       \\ |",
+            "|/_________________________________________________________\\|",
+        ],
+        2: [
+            ""
+        ]
+
+    }
+    camara = salas.get(sala)
+    if camara:
+        for linha in camara:
+            print(linha)

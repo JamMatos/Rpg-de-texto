@@ -32,7 +32,7 @@ class Jogador:
         self.dano_base_min = 3
         self.dano_base_max = 5
         self.defesa_base = 0
-        self.vida_base = vida
+        #self.vida_base = vida
 
     def __str__(self):
         return f"{self.nome}"
@@ -44,7 +44,6 @@ class Jogador:
         if item.tipo == "Arma":
             self.dano_min += item.dano_min
             self.dano_max += item.dano_max
-            #self.dano = f"{self.dano_min} - {self.dano_max}"
 
     def recalcular_status(self):
         """Função que recalcular os dados do personagem."""
@@ -52,7 +51,7 @@ class Jogador:
         self.dano_min = self.dano_base_min
         self.dano_max = self.dano_base_max
         self.defesa = self.defesa_base
-        self.vida = self.vida_base
+        #self.vida = self.vida_base
 
         for item in self.inventario:
             if item.ativo and item.tipo == "Arma":

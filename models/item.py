@@ -104,7 +104,7 @@ class Pocao(Item):
         self.valor = valor  # Quantidade que dá do seu atributo
         self.alvo = alvo  # Indica em quem usar a poção
         self.quantidade = quantidade # Quantidade do item para adicionar ao jogador
-        super().__init__(nome, descricao, "Porção", ativo)
+        super().__init__(nome, descricao, "Poção", ativo)
 
     def usar(self):
         '''Função que utiliza da poção até a quantidade chegar a 0.'''
