@@ -3,25 +3,23 @@
 import os
 from models.monstros import Fantasma
 from routers.fim_de_jogo import zerou_vida
-from routers.combate.combate import controles
+from routers.combate.interface import controles, interface_batalha
 
 
 def terceiro_nivel(prota: object, nivel: int):
     """Função que roda o terceiro nível do jogo"""
     fantasma = Fantasma()
+    inimigos = [fantasma]
+    novo_nivel = nivel
+
     while fantasma.vida > 0 and prota.vida > 0:
-        if prota.vida <= 0:
-            zerou_vida()
-
         os.system("cls")
-        print("----- Nível 3 -----")
-        print(f"Inimigo: {fantasma.nome}")
-        print(f"Vida: {fantasma.vida}")
-        print(f"Dano: {fantasma.dano}\n")
+        interface_batalha(nivel, inimigos, prota)
 
-        print(f"Seu nome: {prota.nome}")
-        print(f"Vida: {prota.vida}")
-        print(f"Dano: {prota.dano}\n")
+        novo_nivel = controles(prota, inimigos, nivel)
 
-        novo_nivel: int = controles(prota, fantasma, nivel)
+    if prota.vida <= 0:
+        zerou_vida()
+        return 0  # Prota morreu, acabou o jogo
+
     return novo_nivel

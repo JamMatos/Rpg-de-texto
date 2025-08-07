@@ -3,7 +3,7 @@
 # import random
 from models.item import Arma, Acessorio, Magico, Pocao
 
-espada_madeira = Arma("Espada de Madeira", "Uma espada velha de madeira", 5, 10)
+espada_madeira = Arma("Espada de Madeira", "Uma espada velha de madeira", 7, 10)
 anel_rubi = Acessorio(
     nome = "Anel de Rubi",
     descricao = "Um anel prateado com um rubi no centro",

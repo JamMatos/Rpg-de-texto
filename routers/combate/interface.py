@@ -6,7 +6,8 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
     '''Função para criar a Interface das batalhas'''
     print(f"----- Nível {nivel} -----")
     for idx, inimigo in enumerate(inimigos, start=1):
-        print(f"Número inimigo: {idx}.")
+        if len(inimigos) >= 2:
+            print(f"Número inimigo: {idx}.")
         print(f"Inimigo: {inimigo.nome}")
         print(f"Vida: {inimigo.vida}")
         print(f"Dano: {inimigo.dano}\n")
@@ -33,13 +34,21 @@ def controles(prota, inimigos: list, nivel:int):
         pocao = True
         print("3 - Usar poção")
 
+    def acao_inimigo():
+        for inimigo in inimigos:
+            dano_inimigo = random.randint(inimigo.dano_min,inimigo.dano_max)
+            prota.vida -= dano_inimigo
+            input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")
+
     def executar_acao(acao,inimigo):
+        sucesso = False
         if acao == 1:
             dano_jogador = random.randint(prota.dano_min,prota.dano_max)
             inimigo.vida -= dano_jogador
             print(f"Você causou um dano de {dano_jogador}.")
+            sucesso = True
 
-        elif acao == 2 and magia:
+        elif acao == 2 and magia is True:
             magias_disponiveis = [item for item in prota.inventario \
             if isinstance(item, Magico) and item.ativo]
 
@@ -63,51 +72,64 @@ def controles(prota, inimigos: list, nivel:int):
             prota.energia -= magia_escolhida.custo
             print(f"\nVocê usou {magia_escolhida.nome} e causou {magia_escolhida.valor} de dano.")
 
-        if acao == 3 and pocao:
+            sucesso = True
+
+        if acao == 3 and pocao is True:
             pocoes_disponiveis = [item for item in prota.inventario \
             if isinstance(item, Pocao) and item.ativo]
 
             print("\n --- Suas poçõess ativas ---")
-            for idx, pocoa_item in enumerate(pocoes_disponiveis, start=1):
-                print(f"{idx}. {pocoa_item.nome} - {pocoa_item.descricao}")
-                print(f"({pocoa_item.atributo.capitalize()} | {pocoa_item.valor})")
+            for idx, pocao_item in enumerate(pocoes_disponiveis, start=1):
+                print(f"{idx}. {pocao_item.nome} - {pocao_item.descricao}")
+                print(f"({pocao_item.atributo.capitalize()} | {pocao_item.valor})")
 
             try:
                 escolha = int(input("Escolha a poção que deseja usar: "))
-                pocoa_escolhida = pocoes_disponiveis[escolha - 1]
+                pocao_escolhida = pocoes_disponiveis[escolha - 1]
             except (ValueError, IndexError):
                 input("Escolha inválida. Pressione Enter para continuar")
                 return
 
-            if pocoa_escolhida.atributo == "Dano":
-                inimigo.vida -= pocoa_escolhida.valor
-                print(f"\nVocê usou {pocoa_escolhida.nome} e causou {pocoa_escolhida.valor}" \
+            if pocao_escolhida.atributo == "Dano":
+                inimigo.vida -= pocao_escolhida.valor
+                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor}" \
                 f"de dano ao {inimigo.nome}.")
-            elif pocoa_escolhida.atributo == "Vida":
-                prota.vida += pocoa_escolhida.valor
-                print(f"\nVocê usou {pocoa_escolhida.nome} e causou {pocoa_escolhida.valor}" \
+            elif pocao_escolhida.atributo == "Vida":
+                prota.vida += pocao_escolhida.valor
+                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor}" \
                 "de vida para você.")
 
-        dano_inimigo = random.randint(inimigo.dano_min,inimigo.dano_max)
-        prota.vida -= dano_inimigo
-        input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")
+            sucesso = True
+
+        if sucesso:
+            acao_inimigo()
+
+    acao = None
 
     try:
         acao = int(input("Digite o número da ação: "))
+        if acao < 1 or acao > len(inimigos):
+            raise ValueError("Entrada inválida. Digite apenas ações possíveis")
     except ValueError:
-        input("Entrada inválida. Digite apenas números.")
+        input("Entrada inválida. Digite apenas ações possíveis")
 
-    if len(inimigos) >= 2:
-        try:
-            escolha = int(input("Qual inimigo deseja atacar? "))
-            inimigo_escolhido = inimigos[escolha - 1]
-        except (ValueError, IndexError):
-            input("Escolha inválida. Pressione Enter para continuar")
-            return
-    else:
-        inimigo_escolhido = inimigos[0]
+    if acao:
+        if len(inimigos) >= 2 and acao:
+            try:
+                escolha = int(input("Qual inimigo deseja atacar? "))
+                inimigo_escolhido = inimigos[escolha - 1]
 
-    executar_acao(acao, inimigo_escolhido)
+                if escolha < 1 or escolha > len(inimigos):
+                    raise ValueError("Entrada inválida. Digite apenas ações possíveis")
+
+                if acao and escolha:
+                    executar_acao(acao, inimigo_escolhido)
+            except (ValueError, IndexError):
+                input("Escolha inválida. Pressione Enter para continuar")
+
+        else:
+            inimigo_escolhido = inimigos[0]
+            executar_acao(acao, inimigo_escolhido)
 
     if all(inimigo.vida <= 0 for inimigo in inimigos):
         return nivel + 1

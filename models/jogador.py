@@ -44,6 +44,7 @@ class Jogador:
         if item.tipo == "Arma":
             self.dano_min += item.dano_min
             self.dano_max += item.dano_max
+            self.dano = f"{self.dano_min} - {self.dano_max}"
 
     def recalcular_status(self):
         """Função que recalcular os dados do personagem."""
