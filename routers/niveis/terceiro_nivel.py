@@ -3,7 +3,7 @@
 import os
 from models.monstros import Fantasma
 from routers.fim_de_jogo import zerou_vida
-from routers.combate import controles
+from routers.combate.combate import controles
 
 
 def terceiro_nivel(prota: object, nivel: int):

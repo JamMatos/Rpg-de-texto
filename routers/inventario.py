@@ -34,7 +34,9 @@ def show_inventario(inventario, prota):
             }
 
             for idx, item in enumerate(inventario, start=1):
-                item.idx = idx  # Adiciona índice manualmente para poder reutilizar depois
+                item.idx = (
+                    idx  # Adiciona índice manualmente para poder reutilizar depois
+                )
                 tipos[item.tipo].append(item)
 
             for tipo, itens in tipos.items():
@@ -63,7 +65,8 @@ def show_inventario(inventario, prota):
                                 f"{item.idx}. {item.nome} - {item.descricao} "
                                 f"- Essa é uma poção para usar no {item.alvo} "
                                 f"causando o atributo de {item.atributo} "
-                                f"provocando uma quantidade de {item.valor} ({status})")
+                                f"provocando uma quantidade de {item.valor} ({status})"
+                            )
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")
         try:
@@ -80,22 +83,38 @@ def show_inventario(inventario, prota):
             if not item_escolhido.ativo:
                 # Verifica limites antes de equipar
                 if item_escolhido.tipo == "Arma":
-                    if sum(1 for i in inventario if i.tipo == "Arma" and i.ativo) >= total_arma:
-                        input("Você já tem uma arma equipada. Desequipe uma para trocar.")
+                    if (
+                        sum(1 for i in inventario if i.tipo == "Arma" and i.ativo)
+                        >= total_arma
+                    ):
+                        input(
+                            "Você já tem uma arma equipada. Desequipe uma para trocar."
+                        )
                         continue
                 elif item_escolhido.tipo == "Acessório":
-                    if sum(1 for i in inventario if i.tipo == "Acessório" and i.ativo) >= total_acessorio:
-                        input("Você já tem 2 acessórios equipados. Desequipe um para trocar.")
+                    if (
+                        sum(1 for i in inventario if i.tipo == "Acessório" and i.ativo)
+                        >= total_acessorio
+                    ):
+                        input(
+                            "Você já tem 2 acessórios equipados. Desequipe um para trocar."
+                        )
                         continue
                 elif item_escolhido.tipo == "Mágico":
-                    if sum(1 for i in inventario if i.tipo == "Mágico" and i.ativo) >= total_magico:
-                        input("Você já tem 2 itens mágicos equipados. Desequipe um para trocar.")
+                    if (
+                        sum(1 for i in inventario if i.tipo == "Mágico" and i.ativo)
+                        >= total_magico
+                    ):
+                        input(
+                            "Você já tem 2 itens mágicos equipados. Desequipe um para trocar."
+                        )
                         continue
             item_escolhido.ativo = not item_escolhido.ativo
         else:
             input("Número inválido. Pressione Enter para continuar.")
 
         os.system("cls")
+
 
 def acessar_inventario(prota):
     "Função que pergunta se desejar acessar o inventário."
