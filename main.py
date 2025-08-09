@@ -2,6 +2,7 @@
 
 import os
 import json
+import conquistas.conquista
 from routers.niveis.primeiro_nivel import primeiro_nivel
 from routers.niveis.segundo_nivel import segundo_nivel
 from routers.niveis.terceiro_nivel import terceiro_nivel
@@ -22,8 +23,9 @@ from models.item_catalogo import (
     peitoral_malha,
 )
 
+
 # Abrir o json para salvar as conquistas
-with open("../conquistas.json", "r", encoding="utf-8") as f:
+with open("conquistas/conquistas.json", "r", encoding="utf-8") as f:
     conquistas = json.load(f)
 
 # Criar o jogador e altera o nome
@@ -64,10 +66,10 @@ while prota.vida > 0 and NIVEL != 0:
     while NIVEL == 1:
         resultado = primeiro_nivel(prota, NIVEL)
         NIVEL = resultado
-    #if conquistas["primeira_morte"]:
-    print("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
+    # if conquistas["primeira_morte"]:
+    input("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
     conquistas["primeira_morte"] = True
-    with open("../conquistas.json", "w", encoding="utf-8") as f:
+    with open("conquistas/conquistas.json", "w", encoding="utf-8") as f:
         json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):
@@ -145,10 +147,10 @@ while prota.vida > 0 and NIVEL != 0:
         resultado = boss_fight(prota, NIVEL)
         NIVEL = resultado
 
-    #if not conquistas["salvou_irmao"]:
-    print("🎉 Conquista desbloqueada: Resgatou seu irmão!")
+    # if not conquistas["salvou_irmao"]:
+    input("🎉 Conquista desbloqueada: Resgatou seu irmão!")
     conquistas["salvou_irmao"] = True
-    with open("../conquistas.json", "w", encoding="utf-8") as f:
+    with open("conquistas/conquistas.json", "w", encoding="utf-8") as f:
         json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):
