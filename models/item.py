@@ -112,3 +112,18 @@ class Pocao(Item):
             self.quantidade -= 1
             return True
         return False
+
+class Equipamento(Item):
+    '''Class para equipamento, tipo armadura.
+    
+    Inputs:
+    - Atributo: Qual efeito a poção produz;
+    - Valor: Quantidade do atributo que a porção produz;'''
+    def __init__(self, nome, descricao, atributo, valor, ativo = False):
+        self.atributo = atributo  # Cura, dano, paralisia
+        self.valor = valor  # Quantidade que dá do seu atributo
+        super().__init__(nome, descricao, "Armadura", ativo)
+
+    def usar_defesa(self, prota):
+        '''Método para calcular a defesa do jogador'''
+        prota.defesa = self.valor

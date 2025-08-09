@@ -14,8 +14,9 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
 
     print(f"Seu nome: {prota.nome}")
     print(f"Vida: {prota.vida}")
+    if prota.defesa > 0:
+        print(f"Defesa: {prota.defesa}")
     print(f"Dano: {prota.dano}\n")
-
 
 
 def controles(prota, inimigos: list, nivel:int):
@@ -37,8 +38,12 @@ def controles(prota, inimigos: list, nivel:int):
     def acao_inimigo():
         for inimigo in inimigos:
             dano_inimigo = random.randint(inimigo.dano_min,inimigo.dano_max)
+            if prota.defesa > 0:
+                # Cada 2 pontos de defesa deve diminuir 1 ponto de ataque que o jogador sofre
+                #ataque -= (defesa/2)
+                dano_inimigo -= (prota.defesa/2)
             prota.vida -= dano_inimigo
-            input(f"{inimigo.nome} causou um dano de {dano_inimigo}.")
+            input(f"{inimigo.nome} causou um dano de {int(dano_inimigo)}.")
 
     def executar_acao(acao,inimigo):
         sucesso = False
@@ -108,7 +113,7 @@ def controles(prota, inimigos: list, nivel:int):
 
     try:
         acao = int(input("Digite o número da ação: "))
-        if acao < 1 or acao > len(inimigos):
+        if acao < 1: # or acao > len(inimigos):
             raise ValueError("Entrada inválida. Digite apenas ações possíveis")
     except ValueError:
         input("Entrada inválida. Digite apenas ações possíveis")

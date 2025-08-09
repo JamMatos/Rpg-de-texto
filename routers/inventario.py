@@ -31,6 +31,7 @@ def show_inventario(inventario, prota):
                 "Acessório": [],
                 "Mágico": [],
                 "Poção": [],
+                "Armadura": [],
             }
 
             for idx, item in enumerate(inventario, start=1):
@@ -64,8 +65,14 @@ def show_inventario(inventario, prota):
                             print(
                                 f"{item.idx}. {item.nome} - {item.descricao} "
                                 f"- Essa é uma poção para usar no {item.alvo} "
-                                f"causando o atributo de {item.atributo} "
+                                f"\ncausando o atributo de {item.atributo} "
                                 f"provocando uma quantidade de {item.valor} ({status})"
+                            )
+                        elif tipo == "Armadura":
+                            print(
+                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                "- Essa é uma armadura que melhora sua "
+                                f"{item.atributo} em {item.valor} ({status})"
                             )
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")

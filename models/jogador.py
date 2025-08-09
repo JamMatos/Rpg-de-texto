@@ -66,5 +66,7 @@ class Jogador:
                 elif item.atributo == "dano":
                     self.dano_min += int(item.valor / 2)
                     self.dano_max += int(item.valor / 2)
+            elif item.ativo and item.tipo == "Armadura":
+                self.defesa += item.valor
 
         self.dano = f"{self.dano_min} - {self.dano_max}"

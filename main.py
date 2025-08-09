@@ -10,7 +10,15 @@ from routers.inventario import acessar_inventario
 from routers.fim_de_jogo import final_do_jogo
 from routers.mapa import mostrar_mapa
 from models.jogador import Jogador
-from models.item_catalogo import espada_madeira, anel_rubi, KingNote, espada_fantasma, pocao_vida_p
+from models.item_catalogo import (
+    espada_madeira,
+    anel_rubi,
+    KingNote,
+    espada_fantasma,
+    pocao_vida_p,
+    pocao_vida_g,
+    peitoral_malha,
+)
 
 with open("../conquistas.json", "r", encoding="utf-8") as f:
     conquistas = json.load(f)
@@ -22,9 +30,11 @@ while prota.nome == "Fulano":
         prota.nome = nome.capitalize()
 NIVEL = 1
 
+
 def verificar_status(jogador: object, nivel: int) -> bool:
-    '''Função se verificar se o jogo deve continuar ou não.'''
+    """Função se verificar se o jogo deve continuar ou não."""
     return jogador.vida < 0 and nivel == 0
+
 
 while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
@@ -38,10 +48,12 @@ while prota.vida > 0 and NIVEL != 0:
 
     # Definindo mundo
     prota.armazenar_item(espada_madeira)
-    #prota.dano = "10 - 15"
+    # prota.dano = "10 - 15"
 
     mostrar_mapa(NIVEL)
-    input("Entrando na primeira câmara você se encontrar com seu primeiro inimigo, um Zumbi.")
+    input(
+        "Entrando na primeira câmara você se encontrar com seu primeiro inimigo, um Zumbi."
+    )
 
     os.system("cls")
     while NIVEL == 1:
@@ -57,11 +69,15 @@ while prota.vida > 0 and NIVEL != 0:
         break
 
     os.system("cls")
-    input("Você encontrou um anel de rubi.")
+    input("Você encontrou um anel de rubi e uma roupa de malha.")
 
     prota.armazenar_item(anel_rubi)
+    prota.armazenar_item(peitoral_malha)
+    prota.armazenar_item(pocao_vida_p)
 
     acessar_inventario(prota)
+    prota.recalcular_status()
+    peitoral_malha.usar_defesa(prota)
 
     os.system("cls")
     mostrar_mapa(NIVEL)
@@ -79,9 +95,10 @@ while prota.vida > 0 and NIVEL != 0:
     input("Você encontrou um livro magenta e alguns frascos com um líquido vermelho.")
 
     prota.armazenar_item(KingNote)
-    prota.armazenar_item(pocao_vida_p)
+    prota.armazenar_item(pocao_vida_g)
 
     acessar_inventario(prota)
+    prota.recalcular_status()
 
     os.system("cls")
     mostrar_mapa(NIVEL)
@@ -99,6 +116,7 @@ while prota.vida > 0 and NIVEL != 0:
     prota.armazenar_item(espada_fantasma)
     espada_fantasma.ativo = False
     acessar_inventario(prota)
+    prota.recalcular_status()
 
     os.system("cls")
     mostrar_mapa(NIVEL)
@@ -110,7 +128,6 @@ while prota.vida > 0 and NIVEL != 0:
         print("Boss fight")
         resultado = boss_fight(prota, NIVEL)
         NIVEL = resultado
-
 
     if not conquistas["salvou_irmao"]:
         print("🎉 Conquista desbloqueada: Resgatou seu irmão!")
