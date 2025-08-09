@@ -14,20 +14,25 @@ from models.item_catalogo import (
     espada_madeira,
     anel_rubi,
     KingNote,
+    GoldRain,
     espada_fantasma,
     pocao_vida_p,
     pocao_vida_g,
+    pocao_energia,
     peitoral_malha,
 )
 
+# Abrir o json para salvar as conquistas
 with open("../conquistas.json", "r", encoding="utf-8") as f:
     conquistas = json.load(f)
 
+# Criar o jogador e altera o nome
 prota = Jogador()
 while prota.nome == "Fulano":
     nome = input("Digite o nome do personagem: ").strip()
     if nome:
         prota.nome = nome.capitalize()
+# Definindo inicio do jogo
 NIVEL = 1
 
 
@@ -40,7 +45,7 @@ while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
     input(
         "Você é um jovem fazendeiro cuidando das terras que antes foram dos seus pais, "
-        "quando um grupo de monstros atacou \ne sequestraram seu irmão mais novo "
+        "quando um grupo de monstros atacou \ne sequestraram seu irmão mais novo, Carlos, "
         "e agora você deve criar coragem e ir resgatá-lo."
     )
     input("Ao entrar no covil dos monstros, você pega uma espada de madeira.")
@@ -59,11 +64,11 @@ while prota.vida > 0 and NIVEL != 0:
     while NIVEL == 1:
         resultado = primeiro_nivel(prota, NIVEL)
         NIVEL = resultado
-    if not conquistas["primeira_morte"]:
-        print("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
-        conquistas["primeira_morte"] = True
-        with open("../conquistas.json", "w", encoding="utf-8") as f:
-            json.dump(conquistas, f, indent=4)
+    #if conquistas["primeira_morte"]:
+    print("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
+    conquistas["primeira_morte"] = True
+    with open("../conquistas.json", "w", encoding="utf-8") as f:
+        json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):
         break
@@ -92,7 +97,9 @@ while prota.vida > 0 and NIVEL != 0:
     if verificar_status(prota, NIVEL):
         break
 
-    input("Você encontrou um livro magenta e alguns frascos com um líquido vermelho.")
+    input(
+        "Você encontrou um livro magenta e alguns frascos(5) com um líquido vermelho."
+    )
 
     prota.armazenar_item(KingNote)
     prota.armazenar_item(pocao_vida_g)
@@ -113,8 +120,17 @@ while prota.vida > 0 and NIVEL != 0:
     if verificar_status(prota, NIVEL):
         break
 
+    input(
+        "Ao derrotar o fantasma, ele dropa uma espada prateada brilhante coberta de gosma."
+    )
+    input("Você encontrou mais frascos com o líquido vermelho, só que menores.")
+    input("Você também encontrou alguns frascos quadrados com um líquido verde.")
+    input("Um novo livro aparece no chão, amarelo com algumas lanças na capa.")
+
     prota.armazenar_item(espada_fantasma)
     espada_fantasma.ativo = False
+    prota.armazenar_item(pocao_energia)
+    prota.armazenar_item(GoldRain)
     acessar_inventario(prota)
     prota.recalcular_status()
 
@@ -129,11 +145,11 @@ while prota.vida > 0 and NIVEL != 0:
         resultado = boss_fight(prota, NIVEL)
         NIVEL = resultado
 
-    if not conquistas["salvou_irmao"]:
-        print("🎉 Conquista desbloqueada: Resgatou seu irmão!")
-        conquistas["salvou_irmao"] = True
-        with open("../conquistas.json", "w", encoding="utf-8") as f:
-            json.dump(conquistas, f, indent=4)
+    #if not conquistas["salvou_irmao"]:
+    print("🎉 Conquista desbloqueada: Resgatou seu irmão!")
+    conquistas["salvou_irmao"] = True
+    with open("../conquistas.json", "w", encoding="utf-8") as f:
+        json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):
         break

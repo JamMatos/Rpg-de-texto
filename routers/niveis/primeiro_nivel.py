@@ -3,7 +3,6 @@
 import os
 from models.monstros import Zombie
 from routers.fim_de_jogo import zerou_vida
-#from routers.combate.combate import controles
 from routers.combate.interface import interface_batalha, controles
 
 

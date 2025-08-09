@@ -64,6 +64,7 @@ def show_inventario(inventario, prota):
                         elif tipo == "Poção":
                             print(
                                 f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"- Quantidade: {item.quantidade} "
                                 f"- Essa é uma poção para usar no {item.alvo} "
                                 f"\ncausando o atributo de {item.atributo} "
                                 f"provocando uma quantidade de {item.valor} ({status})"

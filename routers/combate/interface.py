@@ -4,7 +4,10 @@ from models.item import Magico, Pocao
 
 def interface_batalha(nivel:int, inimigos: list, prota: object):
     '''Função para criar a Interface das batalhas'''
-    print(f"----- Nível {nivel} -----")
+    if nivel == 4:
+        print("----- Boss Fight -----")
+    else:
+        print(f"----- Nível {nivel} -----")
     for idx, inimigo in enumerate(inimigos, start=1):
         if len(inimigos) >= 2:
             print(f"Número inimigo: {idx}.")
@@ -15,7 +18,9 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
     print(f"Seu nome: {prota.nome}")
     print(f"Vida: {prota.vida}")
     if prota.defesa > 0:
+        print("# Cada 2 pontos de defesa o dano sofrido diminuir em 1.")
         print(f"Defesa: {prota.defesa}")
+    print(f"Energia: {prota.energia}")
     print(f"Dano: {prota.dano}\n")
 
 
@@ -43,7 +48,11 @@ def controles(prota, inimigos: list, nivel:int):
                 #ataque -= (defesa/2)
                 dano_inimigo -= (prota.defesa/2)
             prota.vida -= dano_inimigo
-            input(f"{inimigo.nome} causou um dano de {int(dano_inimigo)}.")
+            if prota.defesa > 0:
+                input(f"{inimigo.nome} causou um dano de {int(dano_inimigo)} "
+                f"({dano_inimigo+(prota.defesa/2)}).")
+            else:
+                input(f"{inimigo.nome} causou um dano de {int(dano_inimigo)}.")
 
     def executar_acao(acao,inimigo):
         sucesso = False
@@ -85,11 +94,16 @@ def controles(prota, inimigos: list, nivel:int):
 
             print("\n --- Suas poçõess ativas ---")
             for idx, pocao_item in enumerate(pocoes_disponiveis, start=1):
-                print(f"{idx}. {pocao_item.nome} - {pocao_item.descricao}")
+                print(f"{idx}. {pocao_item.nome} - {pocao_item.descricao} ")
+                print(f"- {pocao_item.quantidade}")
                 print(f"({pocao_item.atributo.capitalize()} | {pocao_item.valor})")
 
             try:
                 escolha = int(input("Escolha a poção que deseja usar: "))
+                if escolha == 0:
+                    print("Você decidiu não usar nenhuma poção.")
+                    return
+
                 pocao_escolhida = pocoes_disponiveis[escolha - 1]
             except (ValueError, IndexError):
                 input("Escolha inválida. Pressione Enter para continuar")
@@ -97,12 +111,19 @@ def controles(prota, inimigos: list, nivel:int):
 
             if pocao_escolhida.atributo == "Dano":
                 inimigo.vida -= pocao_escolhida.valor
-                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor}" \
-                f"de dano ao {inimigo.nome}.")
+                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor} "
+                f"de {pocao_escolhida.atributo} ao {inimigo.nome}.")
             elif pocao_escolhida.atributo == "Vida":
                 prota.vida += pocao_escolhida.valor
-                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor}" \
-                "de vida para você.")
+                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor} "
+                f"de {pocao_escolhida.atributo} para você.")
+            elif pocao_escolhida.atributo == "Energia":
+                prota.energia += pocao_escolhida.valor
+                print(f"\n Você usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor} "
+                f"de {pocao_escolhida.atributo} para você.")
+
+            #Diminuir a quantidade da poção após o uso
+            pocao_escolhida.usar()
 
             sucesso = True
 
