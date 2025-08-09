@@ -11,7 +11,10 @@ Inspirado pelo meu pequeno grande amigo Leo, estou criando esse jogo de rpg para
 - Lore do jogo;
 - Mapa;
 - Conquistas;
-- Loja?;
+- Loja? Encantar os itens;
+-- Usar as conquistas como os pontos para encantar;
+--- Feitiços = energia pela metade;
+--- Outros itens = dobrar o valor;
 
 ## O que já fiz:
 - Sistema de Inventário;
@@ -24,10 +27,17 @@ Inspirado pelo meu pequeno grande amigo Leo, estou criando esse jogo de rpg para
 ## Coisas para fazer:
 - Definir melhor como os itens influenciaram nos status; Feito+-
 -- Exemplo: Anel de rubi ele aumenta o dano mínimo, máximo ou os dois?
+- Fazer o jogo mais dinamico, cada sala tem objetos para o jogador interagir;
+- Colocar explicação da defesa;
+- Arrumar uso das poções;
+
+## Coisas feitas:
+- Fazer um limitador de itens equipados no inventario, 1 espada, 2 magicos e acessorios, sem limites para poções FEITO
+- Arrumar para o jogo finalizar quando a vida do jogador chegar a 0; FEITO
 - Utilizar de um arquivo JSON para registrar as conquistas; FEITO
 - Atualizar o combate para conseguir ter varios monstros; FEITO
 - Arrumar a vida que enche após entrar no inventário, isso não deveria acontecer; FEITO
-- Arrumar para o jogo finalizar quando a vida do jogador chegar a 0; FEITO?
-- Fazer o jogo mais dinamico, cada sala tem objetos para o jogador interagir;
-- Fazer um limitador de itens equipados no inventario, 1 espada, 2 magicos e acessorios, sem limites para poções FEITO
-
+- Adicionar energia aos dados Feito;
+- Colocar a quantidade de poções Feito;
+- Adicionar descrição espada do fantasma Feito;
+- Colocar explicação da defesa Feito;
