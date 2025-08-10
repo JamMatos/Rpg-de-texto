@@ -6,7 +6,7 @@ from routers.fim_de_jogo import zerou_vida
 from routers.combate.interface import controles, interface_batalha
 
 
-def terceiro_nivel(prota: object, nivel: int):
+def terceiro_nivel(prota: object, nivel: int, pato: object):
     """Função que roda o terceiro nível do jogo"""
     fantasma = Fantasma()
     inimigos = [fantasma]
@@ -16,7 +16,7 @@ def terceiro_nivel(prota: object, nivel: int):
         os.system("cls")
         interface_batalha(nivel, inimigos, prota)
 
-        novo_nivel = controles(prota, inimigos, nivel)
+        novo_nivel = controles(prota, inimigos, nivel, pato)
 
     if prota.vida <= 0:
         zerou_vida()

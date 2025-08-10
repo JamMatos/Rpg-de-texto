@@ -24,11 +24,12 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
     print(f"Dano: {prota.dano}\n")
 
 
-def controles(prota, inimigos: list, nivel:int):
+def controles(prota, inimigos: list, nivel:int, animal: object):
     '''Função que chama o sistema de combate.'''
 
     magia = False
     pocao = False
+    pato = False
 
     print("---- CONTROLES ----")
     print("1 - Atacar com arma")
@@ -39,6 +40,9 @@ def controles(prota, inimigos: list, nivel:int):
     if any(isinstance(item, Pocao) and item.ativo for item in prota.inventario):
         pocao = True
         print("3 - Usar poção")
+    if prota.vida < 10 and nivel == 4:
+        pato = True
+        print("4 - Usar o pato")
 
     def acao_inimigo():
         for inimigo in inimigos:
@@ -88,9 +92,9 @@ def controles(prota, inimigos: list, nivel:int):
 
             sucesso = True
 
-        if acao == 3 and pocao is True:
+        elif acao == 3 and pocao is True:
             pocoes_disponiveis = [item for item in prota.inventario \
-            if isinstance(item, Pocao) and item.ativo]
+            if isinstance(item, Pocao) and item.ativo and item.quantidade > 0]
 
             print("\n --- Suas poçõess ativas ---")
             for idx, pocao_item in enumerate(pocoes_disponiveis, start=1):
@@ -126,6 +130,14 @@ def controles(prota, inimigos: list, nivel:int):
             pocao_escolhida.usar()
 
             sucesso = True
+
+        elif acao == 4 and pato is True:
+            input("Você como último recurso utiliza do pato para atacar.")
+            input("O pato corre em direção ao boss...")
+            input("Então ele tira de debaixo da asa, uma bomba nuclear?")
+            input("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM!")
+            input(f"{animal.nome} explodiu matando o chefão.")
+            inimigo.vida = 0
 
         if sucesso:
             acao_inimigo()

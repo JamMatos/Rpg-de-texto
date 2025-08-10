@@ -2,7 +2,7 @@
 
 import os
 import json
-import conquistas.conquista
+import routers.conquistas.conquista # pylint: disable=unused-import
 from routers.niveis.primeiro_nivel import primeiro_nivel
 from routers.niveis.segundo_nivel import segundo_nivel
 from routers.niveis.terceiro_nivel import terceiro_nivel
@@ -22,10 +22,14 @@ from models.item_catalogo import (
     pocao_energia,
     peitoral_malha,
 )
+from models.animal_catalogo import (
+    pato as pato_pet
+)
 
+CAMINHO_CONQUISTAS = "routers/conquistas/conquistas.json"
 
 # Abrir o json para salvar as conquistas
-with open("conquistas/conquistas.json", "r", encoding="utf-8") as f:
+with open(CAMINHO_CONQUISTAS, "r", encoding="utf-8") as f:
     conquistas = json.load(f)
 
 # Criar o jogador e altera o nome
@@ -69,7 +73,7 @@ while prota.vida > 0 and NIVEL != 0:
     # if conquistas["primeira_morte"]:
     input("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
     conquistas["primeira_morte"] = True
-    with open("conquistas/conquistas.json", "w", encoding="utf-8") as f:
+    with open(CAMINHO_CONQUISTAS, "w", encoding="utf-8") as f:
         json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):
@@ -102,6 +106,18 @@ while prota.vida > 0 and NIVEL != 0:
     input(
         "Você encontrou um livro magenta e alguns frascos(5) com um líquido vermelho."
     )
+    adotar = input("Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) ").lower()
+    if adotar == 's':
+        pato_pet.ativo = True
+        pato_pet.novo_nome()
+        input(f"{pato_pet.nome} aumentou sua {pato_pet.qualidade} em {pato_pet.valor}")
+        prota.vida += pato_pet.valor
+    elif adotar == 'n':
+        input("Você matou o pato.")
+        input("Comendo ele você ganhou mais dano.")
+        prota.dano_min += 10
+        prota.dano_max += 10
+        prota.dano = f"{prota.dano_min} - {prota.dano_max}"
 
     prota.armazenar_item(KingNote)
     prota.armazenar_item(pocao_vida_g)
@@ -116,7 +132,7 @@ while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
     while NIVEL == 3:
         print("Nível 3")
-        resultado = terceiro_nivel(prota, NIVEL)
+        resultado = terceiro_nivel(prota, NIVEL, pato_pet)
         NIVEL = resultado
 
     if verificar_status(prota, NIVEL):
@@ -144,13 +160,13 @@ while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
     while NIVEL == 4:
         print("Boss fight")
-        resultado = boss_fight(prota, NIVEL)
+        resultado = boss_fight(prota, NIVEL, pato_pet)
         NIVEL = resultado
 
     # if not conquistas["salvou_irmao"]:
     input("🎉 Conquista desbloqueada: Resgatou seu irmão!")
     conquistas["salvou_irmao"] = True
-    with open("conquistas/conquistas.json", "w", encoding="utf-8") as f:
+    with open(CAMINHO_CONQUISTAS, "w", encoding="utf-8") as f:
         json.dump(conquistas, f, indent=4)
 
     if verificar_status(prota, NIVEL):

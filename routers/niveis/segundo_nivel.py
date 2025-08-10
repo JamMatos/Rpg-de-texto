@@ -15,7 +15,7 @@ def segundo_nivel(prota: object, nivel:int):
         os.system("cls")
         interface_batalha(nivel, inimigos, prota)
 
-        novo_nivel = controles(prota, inimigos, nivel)
+        novo_nivel = controles(prota, inimigos, nivel, animal=None)
 
     if prota.vida <= 0:
         zerou_vida()

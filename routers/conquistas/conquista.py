@@ -2,7 +2,7 @@
 import os
 import json
 
-CAMINHO_CONQUISTAS = "conquistas/conquistas.json"
+CAMINHO_CONQUISTAS = "routers/conquistas/conquistas.json"
 
 # Conquistas iniciais zeradas
 conquistas_iniciais = {

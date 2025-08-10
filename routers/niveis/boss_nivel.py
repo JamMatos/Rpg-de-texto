@@ -6,7 +6,7 @@ from routers.fim_de_jogo import zerou_vida
 from routers.combate.interface import controles, interface_batalha
 
 
-def boss_fight(prota: object, nivel: int):
+def boss_fight(prota: object, nivel: int, pato):
     """Função que roda o último nível do jogo."""
 
     rei = ReiCadaver()
@@ -24,7 +24,7 @@ def boss_fight(prota: object, nivel: int):
         # print(f"Vida: {prota.vida}")
         # print(f"Dano: {prota.dano}\n")
 
-        novo_nivel = controles(prota, inimigos, nivel)
+        novo_nivel = controles(prota, inimigos, nivel, pato)
 
     if prota.vida <= 0:
         zerou_vida()
