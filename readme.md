@@ -29,7 +29,6 @@ Inspirado pelo meu pequeno grande amigo Leo, estou criando esse jogo de rpg para
 - Definir melhor como os itens influenciaram nos status; Feito+-
 -- Exemplo: Anel de rubi ele aumenta o dano mínimo, máximo ou os dois?
 - Fazer o jogo mais dinamico, cada sala tem objetos para o jogador interagir;
-- Colocar explicação da defesa;
 - Arrumar uso das poções;
 - Adicionar um sistema de limite para a vida do jogador;
 

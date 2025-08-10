@@ -2,7 +2,7 @@
 
 import os
 import json
-import routers.conquistas.conquista # pylint: disable=unused-import
+import routers.conquistas.conquista  # pylint: disable=unused-import
 from routers.niveis.primeiro_nivel import primeiro_nivel
 from routers.niveis.segundo_nivel import segundo_nivel
 from routers.niveis.terceiro_nivel import terceiro_nivel
@@ -10,21 +10,11 @@ from routers.niveis.boss_nivel import boss_fight
 from routers.inventario import acessar_inventario
 from routers.fim_de_jogo import final_do_jogo
 from routers.mapa import mostrar_mapa
+from routers.loja import loja
 from models.jogador import Jogador
-from models.item_catalogo import (
-    espada_madeira,
-    anel_rubi,
-    KingNote,
-    GoldRain,
-    espada_fantasma,
-    pocao_vida_p,
-    pocao_vida_g,
-    pocao_energia,
-    peitoral_malha,
-)
-from models.animal_catalogo import (
-    pato as pato_pet
-)
+from models.item_catalogo import itens
+from models.animal_catalogo import pato as pato_pet
+
 
 CAMINHO_CONQUISTAS = "routers/conquistas/conquistas.json"
 
@@ -48,6 +38,7 @@ def verificar_status(jogador: object, nivel: int) -> bool:
 
 
 while prota.vida > 0 and NIVEL != 0:
+    loja(prota)
     os.system("cls")
     input(
         "Você é um jovem fazendeiro cuidando das terras que antes foram dos seus pais, "
@@ -58,8 +49,7 @@ while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
 
     # Definindo mundo
-    prota.armazenar_item(espada_madeira)
-    # prota.dano = "10 - 15"
+    prota.armazenar_item(itens["espada_madeira"])
 
     mostrar_mapa(NIVEL)
     input(
@@ -81,14 +71,15 @@ while prota.vida > 0 and NIVEL != 0:
 
     os.system("cls")
     input("Você encontrou um anel de rubi e uma roupa de malha.")
+    input("Você encontrou alguns frascos pequenos com um líquido vermelho.")
 
-    prota.armazenar_item(anel_rubi)
-    prota.armazenar_item(peitoral_malha)
-    prota.armazenar_item(pocao_vida_p)
+    prota.armazenar_item(itens["anel_rubi"])
+    prota.armazenar_item(itens["peitoral_malha"])
+    prota.armazenar_item(itens["pocao_vida_p"])
 
     acessar_inventario(prota)
     prota.recalcular_status()
-    peitoral_malha.usar_defesa(prota)
+    itens["peitoral_malha"].usar_defesa(prota)
 
     os.system("cls")
     mostrar_mapa(NIVEL)
@@ -104,23 +95,35 @@ while prota.vida > 0 and NIVEL != 0:
         break
 
     input(
-        "Você encontrou um livro magenta e alguns frascos(5) com um líquido vermelho."
+        "Você encontrou um livro magenta e alguns frascos "
+        "com o mesmo líquido vermelho, só que maiores."
     )
-    adotar = input("Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) ").lower()
-    if adotar == 's':
+    adotar = input(
+            "Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) "
+        ).lower()
+    while adotar not in ("n", "s"):
+        adotar = input(
+            "Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) "
+        ).lower()
+    if adotar == "s":
         pato_pet.ativo = True
         pato_pet.novo_nome()
-        input(f"{pato_pet.nome} aumentou sua {pato_pet.qualidade} em {pato_pet.valor}")
+        input(
+            f"{pato_pet.nome} aumentou sua {pato_pet.qualidade} em {pato_pet.valor}"
+        )
         prota.vida += pato_pet.valor
-    elif adotar == 'n':
+        prota.companheiro = True
+    elif adotar == "n":
         input("Você matou o pato.")
         input("Comendo ele você ganhou mais dano.")
-        prota.dano_min += 10
-        prota.dano_max += 10
+        prota.companheiro = False
+        prota.dano_min = prota.dano_min + 10
+        prota.dano_max = prota.dano_max + 10
         prota.dano = f"{prota.dano_min} - {prota.dano_max}"
+        prota.recalcular_status()
 
-    prota.armazenar_item(KingNote)
-    prota.armazenar_item(pocao_vida_g)
+    prota.armazenar_item(itens["king_note"])
+    prota.armazenar_item(itens["pocao_vida_g"])
 
     acessar_inventario(prota)
     prota.recalcular_status()
@@ -141,14 +144,13 @@ while prota.vida > 0 and NIVEL != 0:
     input(
         "Ao derrotar o fantasma, ele dropa uma espada prateada brilhante coberta de gosma."
     )
-    input("Você encontrou mais frascos com o líquido vermelho, só que menores.")
     input("Você também encontrou alguns frascos quadrados com um líquido verde.")
     input("Um novo livro aparece no chão, amarelo com algumas lanças na capa.")
 
-    prota.armazenar_item(espada_fantasma)
-    espada_fantasma.ativo = False
-    prota.armazenar_item(pocao_energia)
-    prota.armazenar_item(GoldRain)
+    prota.armazenar_item(itens["espada_fantasma"])
+    itens["espada_fantasma"].ativo = False
+    prota.armazenar_item(itens["pocao_energia"])
+    prota.armazenar_item(itens["gold_rain"])
     acessar_inventario(prota)
     prota.recalcular_status()
 

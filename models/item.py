@@ -20,11 +20,12 @@ class Item:
     - Tipo: Determinação do grupo que pertence;
     - Ativo: Se o jogador pode utilizar dele."""
 
-    def __init__(self, nome: str, descricao: str, tipo: str, ativo: bool = False):
+    def __init__(self, nome: str, descricao: str, tipo: str, preco:int, ativo: bool = False):
         self.nome = nome
         self.descricao = descricao
         self.tipo = tipo
         self.ativo = ativo
+        self.preco = preco
 
     def __str__(self):
         return f"{self.nome}"
@@ -41,13 +42,14 @@ class Arma(Item):
         self,
         nome: str,
         descricao: str,
+        preco:int,
         dano_min: int,
         dano_max: int,
         ativo: bool = False,
     ):
         self.dano_min = dano_min
         self.dano_max = dano_max
-        super().__init__(nome, descricao, "Arma", ativo)
+        super().__init__(nome, descricao, "Arma", preco, ativo)
 
 
 class Acessorio(Item):
@@ -56,10 +58,10 @@ class Acessorio(Item):
     Inputs:
     - Valor: Quantidade do atributo que o acessório produz."""
 
-    def __init__(self, nome, descricao, valor, atributo, ativo=False):
+    def __init__(self, nome, descricao, valor, atributo,preco, ativo=False):
         self.valor = valor
         self.atributo = atributo
-        super().__init__(nome, descricao, "Acessório", ativo)
+        super().__init__(nome, descricao, "Acessório", preco, ativo)
 
 
 class Magico(Item):
@@ -79,13 +81,14 @@ class Magico(Item):
         atributo,
         valor,
         custo,
+        preco,
         ativo=False,
     ):
         self.descricao_ataque = descricao_ataque
         self.atributo = atributo
         self.valor = valor
         self.custo = custo
-        super().__init__(nome, descricao, "Mágico", ativo)
+        super().__init__(nome, descricao, "Mágico", preco, ativo)
 
 
 class Pocao(Item):
@@ -98,13 +101,13 @@ class Pocao(Item):
     - Quantidade: Quantidade do item para adicionar ao jogador."""
 
     def __init__(self, nome: str, descricao: str, atributo: str, valor: int,
-        alvo: Alvo, quantidade: int, ativo=False):
+        preco:int, alvo: Alvo, quantidade: int, ativo=False):
 
         self.atributo = atributo  # Cura, dano, paralisia
         self.valor = valor  # Quantidade que dá do seu atributo
         self.alvo = alvo  # Indica em quem usar a poção
         self.quantidade = quantidade # Quantidade do item para adicionar ao jogador
-        super().__init__(nome, descricao, "Poção", ativo)
+        super().__init__(nome, descricao, "Poção", preco, ativo)
 
     def usar(self):
         '''Função que utiliza da poção até a quantidade chegar a 0.'''
@@ -119,10 +122,10 @@ class Equipamento(Item):
     Inputs:
     - Atributo: Qual efeito a poção produz;
     - Valor: Quantidade do atributo que a porção produz;'''
-    def __init__(self, nome, descricao, atributo, valor, ativo = False):
+    def __init__(self, nome, descricao, atributo, valor, preco, ativo = False):
         self.atributo = atributo  # Cura, dano, paralisia
         self.valor = valor  # Quantidade que dá do seu atributo
-        super().__init__(nome, descricao, "Armadura", ativo)
+        super().__init__(nome, descricao, "Armadura", preco, ativo)
 
     def usar_defesa(self, prota):
         '''Método para calcular a defesa do jogador'''

@@ -26,7 +26,8 @@ class Jogador:
         self.dano_max = dano_max
         self.defesa = defesa
         self.inventario = []
-        self.inv_magia = []
+        self.companheiro = True
+        self.dinheiro = 0
 
         # Valores base
         self.dano_base_min = 3
@@ -49,8 +50,12 @@ class Jogador:
     def recalcular_status(self):
         """Função que recalcular os dados do personagem."""
         # Reseta os valores
-        self.dano_min = self.dano_base_min
-        self.dano_max = self.dano_base_max
+        if self.companheiro is False:
+            self.dano_min = self.dano_base_min + 10
+            self.dano_max = self.dano_base_max + 10
+        else:
+            self.dano_min = self.dano_base_min
+            self.dano_max = self.dano_base_max
         self.defesa = self.defesa_base
         #self.vida = self.vida_base
 
