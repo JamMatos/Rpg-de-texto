@@ -1,0 +1,15 @@
+{% block content %}
+<h2>Escolha sua {{ tipo }}</h2>
+<form action="{{ url_for('usar_item') }}" method="post">
+    <input type="hidden" name="acao" value="{{ acao }}">
+    <input type="hidden" name="tipo" value="{{ tipo }}">
+    {% for idx, item in enumerate(itens) %}
+        <div>
+            <input type="radio" name="item_idx" value="{{ idx }}" required>
+            {{ item.nome }} - {{ item.descricao }} ({{ item.valor }})
+        </div>
+    {% endfor %}
+    <button type="submit">Usar</button>
+</form>
+
+{% endblock %}

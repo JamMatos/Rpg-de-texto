@@ -1,0 +1,25 @@
+{% extends "partials/base.html" %}
+{% block content %}
+<div id="inimigo">
+    {% if nivel == 4 %}
+        <p>----- Boss Fight -----</p>
+    {% else %}
+        <p>----- Nível {{nivel}} -----</p>
+    {% endif %}
+    <p>Inimigo: {{ inimigo.nome }}</p>
+    <p>Vida: {{ inimigo.vida }}</p>
+    <p>Dano: {{ inimigo.dano }}</p>
+</div>
+<br>
+<div id="jogador">
+    <p>Seu nome: {{ prota.nome }}</p>
+    <p>Vida: {{ prota.vida }}</p>
+    {% if prota.defesa > 0 %}
+    <p>Cada 2 pontos de defesa o dano sofrido diminuir em 1.</p>
+        <p>Defesa: {{ prota.defesa }}</p>
+    {% endif %}
+    <p>Energia: {{ prota.energia }}</p>
+    <p>Dano: {{ prota.dano }}</p>
+</div>
+<br>
+{% endblock %}

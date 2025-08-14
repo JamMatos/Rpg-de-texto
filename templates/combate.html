@@ -1,0 +1,33 @@
+{% extends "status.html" %}
+{% include "status.html" %}
+{% block content %}
+
+<div id="controles">
+    <h2> ---- Controles ----</h2>
+    <p>1 - Atacar com arma</p>
+    {% if "Maneira de saber que tem magia disponivel" %}
+        <p>2 - Atacar com magia</p>
+    {% endif %}
+    {% if "Maneira de saber que tem poção disponivel" %}
+        <p>3 - Usar poção</p>
+    {% endif %}
+    {% if "Maneira de saber que o pato está disponivel" %}
+        <p>4 - Usar o pato</p>
+    {% endif %}
+</div>
+
+<div id="entrada-acao">
+    <form action="" method="post">
+        <label for="acao">Digite o número da ação: </label>
+            <input type="text" id="acao" name="acao" required>
+
+            <input type="submit" value="Enviar">
+    </form>
+</div>
+
+{% if acao == 2 and magia is True%}
+    {% include "usar_magia.html" %}
+{% endif %}
+
+
+{% endblock %}
