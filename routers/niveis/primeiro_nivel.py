@@ -23,4 +23,4 @@ def primeiro_nivel(prota: object, nivel: int):
         zerou_vida()
         return 0  # Prota morreu, volta para o nível 0 (ou menu principal)
 
-    return novo_nivel  # Vitória: avança ou mantém nível
+    return novo_nivel

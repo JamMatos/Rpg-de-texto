@@ -17,7 +17,7 @@ def loja(prota):
 
         lista_itens = []
 
-        for idx, (nome, item) in enumerate(itens_loja.items(), start=1):
+        for idx, (nome, item) in enumerate(itens_loja.items(), start=1): # pylint: disable=unused-variable
             item.idx = idx  # só funciona se for objeto
             tipos[item.tipo].append(item)
 

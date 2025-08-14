@@ -31,6 +31,7 @@ Inspirado pelo meu pequeno grande amigo Leo, estou criando esse jogo de rpg para
 - Fazer o jogo mais dinamico, cada sala tem objetos para o jogador interagir;
 - Arrumar uso das poções;
 - Adicionar um sistema de limite para a vida do jogador;
+- Colocar o jogo para rodar em navegador;
 
 ## Coisas feitas:
 - Fazer um limitador de itens equipados no inventario, 1 espada, 2 magicos e acessorios, sem limites para poções FEITO
