@@ -1,13 +1,10 @@
 {% extends "partials/base.html" %}
 {% block content %}
-    <div id="conteudo-principal">
-        <h1>Bem-vindo(a), <span>{{ nome }}</span>!</h1>
-        <p>Você é um jovem fazendeiro cuidando das terras que antes foram dos seus pais, quando um grupo de monstros atacou e sequestraram seu irmão mais novo, Carlos, e agora você deve criar coragem e ir resgatá-lo.</p>
-        <br>
-        <p>Ao entrar no covil dos monstros, você pega uma espada de madeira.</p>
-    </div>
-    <a href="/nivel_primeiro">
-        <button type="submit">Start</button>
-    </a>
-
+    {% if parte == 1 %}
+        {% include "parte1.html" %}
+    {% elif parte == 2 %}
+        {% include "parte2.html" %}
+    {% elif parte == 3 %}
+        {% include "parte3.html" %}
+    {% endif %}
 {% endblock %}

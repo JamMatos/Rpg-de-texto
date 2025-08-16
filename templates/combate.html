@@ -5,13 +5,13 @@
 <div id="controles">
     <h2> ---- Controles ----</h2>
     <p>1 - Atacar com arma</p>
-    {% if "Maneira de saber que tem magia disponivel" %}
+    {% if tem_magia %}
         <p>2 - Atacar com magia</p>
     {% endif %}
-    {% if "Maneira de saber que tem poção disponivel" %}
+    {% if tem_pocao %}
         <p>3 - Usar poção</p>
     {% endif %}
-    {% if "Maneira de saber que o pato está disponivel" %}
+    {% if tem_pato %}
         <p>4 - Usar o pato</p>
     {% endif %}
 </div>
@@ -24,9 +24,18 @@
             <input type="submit" value="Enviar">
     </form>
 </div>
+{% if acao == 1 %}
+    <div id="resultado1">
+        <p>Você causou um dano de {{ dano_jogador }}.</p>
+        <p>O inimigo causou um dano de {{ dano_inimigo }}</p>
+    </div>
 
-{% if acao == 2 and magia is True%}
+{% elif acao == 2 and tem_magia %}
     {% include "usar_magia.html" %}
+{% elif acao == 3 and tem_pocao %}
+    {% include "usar_pocao.html" %}
+{% elif acao == 4 and tem_pato %}
+    {% include "usar_pato.html" %}
 {% endif %}
 
 

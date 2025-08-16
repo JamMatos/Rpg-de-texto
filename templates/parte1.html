@@ -1,0 +1,33 @@
+{% block content %}
+<div id="conteudo-principal">
+    <h1>Bem-vindo(a), <span>{{ nome }}</span>!</h1>
+    <p>Você é um jovem fazendeiro cuidando das terras que antes foram dos seus pais, quando um grupo de monstros atacou e sequestraram seu irmão mais novo, Carlos, e agora você deve criar coragem e ir resgatá-lo.</p>
+    <p>Ao entrar no covil dos monstros, você pega uma espada de madeira.</p>
+</div>
+
+<button id="botao" onclick="mostrarDiv()" type="submit">Avançar</button>
+
+<div id="avancar" style="display: none;">
+    <p>
+        Entrando na primeira câmara você se encontrar com seu primeiro inimigo, um Zumbi.
+    </p>
+    <p>Prepare-se.</p>
+</div>
+
+<script>
+    document.getElementById("botao").addEventListener("click", function() {
+        var div = document.getElementById("avancar");
+        div.style.display = "block";
+
+        var div2 = document.getElementById("conteudo-principal");
+        div2.style.display = "none";
+
+        var botao = document.getElementById("botao");
+        botao.style.display = "none";
+
+        setTimeout(function mostrarDiv() {
+            window.location.href = "/combate/1"
+        }, 5000);
+    });
+</script>
+{% endblock %}

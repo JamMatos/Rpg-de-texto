@@ -1,0 +1,30 @@
+{% block content %}
+<div id="conteudo-principal">
+    <h2>🎉 Conquista desbloqueada: Matou seu primeiro inimigo!</h2>
+    <p>Você encontrou um anel de rubi e uma roupa de malha.</p>
+    <p>Você encontrou alguns frascos pequenos com um líquido vermelho.</p>
+</div>
+
+<button id="botao" onclick="mostrarDiv()" type="submit">Avançar</button>
+
+<div id="avancar" style="display: none;">
+    <p>Entrando na câmara 2, prepare-se.</p>
+</div>
+
+<script>
+    document.getElementById("botao").addEventListener("click", function() {
+        var div = document.getElementById("avancar");
+        div.style.display = "block";
+
+        var div2 = document.getElementById("conteudo-principal");
+        div2.style.display = "none";
+
+        var botao = document.getElementById("botao");
+        botao.style.display = "none";
+
+        setTimeout(function mostrarDiv() {
+            window.location.href = "/combate/2"
+        }, 5000);
+    });
+</script>
+{% endblock %}

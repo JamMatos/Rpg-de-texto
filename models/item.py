@@ -27,8 +27,15 @@ class Item:
         self.ativo = ativo
         self.preco = preco
 
-    def __str__(self):
-        return f"{self.nome}"
+    def to_dict(self):
+        '''Função para ter os dados em json'''
+        return {
+            "nome": self.nome,
+            "descricao": self.descricao,
+            "tipo": self.tipo,
+            "ativo": self.ativo,
+            "preco": self.preco
+        }
 
 
 class Arma(Item):
@@ -51,6 +58,13 @@ class Arma(Item):
         self.dano_max = dano_max
         super().__init__(nome, descricao, "Arma", preco, ativo)
 
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({
+            "dano_min": self.dano_min,
+            "dano_max": self.dano_max
+        })
+        return base
 
 class Acessorio(Item):
     """Class para equipamento que aumentam algum atributo.
@@ -62,6 +76,14 @@ class Acessorio(Item):
         self.valor = valor
         self.atributo = atributo
         super().__init__(nome, descricao, "Acessório", preco, ativo)
+
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({
+            "valor": self.valor,
+            "atributo": self.atributo
+        })
+        return base
 
 
 class Magico(Item):
@@ -90,6 +112,16 @@ class Magico(Item):
         self.custo = custo
         super().__init__(nome, descricao, "Mágico", preco, ativo)
 
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({
+            "descricao_ataque": self.descricao_ataque,
+            "atributo": self.atributo,
+            "valor": self.valor,
+            "custo": self.custo
+        })
+        return base
+
 
 class Pocao(Item):
     """Class para poções.
@@ -109,6 +141,16 @@ class Pocao(Item):
         self.quantidade = quantidade # Quantidade do item para adicionar ao jogador
         super().__init__(nome, descricao, "Poção", preco, ativo)
 
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({
+            "atributo": self.atributo,
+            "valor": self.valor,
+            "alvo": self.alvo,
+            "quantidade": self.quantidade
+        })
+        return base
+
     def usar(self):
         '''Função que utiliza da poção até a quantidade chegar a 0.'''
         if self.quantidade > 0:
@@ -126,6 +168,14 @@ class Equipamento(Item):
         self.atributo = atributo  # Cura, dano, paralisia
         self.valor = valor  # Quantidade que dá do seu atributo
         super().__init__(nome, descricao, "Armadura", preco, ativo)
+
+    def to_dict(self):
+        base = super().to_dict()
+        base.update({
+            "atributo": self.atributo,
+            "valor": self.valor,
+        })
+        return base
 
     def usar_defesa(self, prota):
         '''Método para calcular a defesa do jogador'''
