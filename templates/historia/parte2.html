@@ -1,0 +1,70 @@
+{% block content %}
+<div id="conteudo-principal">
+    <h2>🎉 Conquista desbloqueada: Matou seu primeiro inimigo!</h2>
+    <p>Você encontrou um anel de rubi e uma roupa de malha.</p>
+    <p>Você encontrou alguns frascos pequenos com um líquido vermelho.</p>
+</div>
+
+<div id="Inventario">
+    <label for="inv">Deseja abrir o Inventário?</label>
+
+    <button id="botao_sim" onclick="abrirInv()" type="submit">Sim</button>
+    <button id="botao_nao" onclick="mostrarDiv()" type="submit">Não</button>
+</div>
+
+<div id="abrirInv" style="display: none;">
+    <p>Ok, abrindo inventário.</p>
+</div>
+
+<div id="avancar" style="display: none;">
+    <p>Entrando na câmara 2, prepare-se.</p>
+</div>
+
+<script>
+    document.getElementById("botao_nao").addEventListener("click", function() {
+        var div = document.getElementById("avancar");
+        div.style.display = "block";
+
+        var div2 = document.getElementById("conteudo-principal");
+        div2.style.display = "none";
+
+        var div3 = document.getElementById("Inventario");
+        div3.style.display = "none";
+
+        var botao = document.getElementById("botao_nao");
+        botao.style.display = "none";
+
+        var botao2 = document.getElementById("botao_sim");
+        botao2.style.display = "none";
+
+        setTimeout(function mostrarDiv() {
+            window.location.href = "/combate/2"
+        }, 5000);
+    });
+
+    document.getElementById("botao_sim").addEventListener("click", function() {
+        var div = document.getElementById("abrirInv");
+        div.style.display = "block";
+
+        var div2 = document.getElementById("conteudo-principal");
+        div2.style.display = "none";
+
+        var div3 = document.getElementById("Inventario");
+        div3.style.display = "none";
+
+        var botao = document.getElementById("botao_nao");
+        botao.style.display = "none";
+
+        var botao2 = document.getElementById("botao_sim");
+        botao2.style.display = "none";
+
+        var parte = JSON.parse('{{ parte | tojson | safe }}');
+        console.log(parte)
+
+        setTimeout(function abrirInv() {
+            window.location.href = "/inventario"
+        }, 5000);
+    });
+
+</script>
+{% endblock %}

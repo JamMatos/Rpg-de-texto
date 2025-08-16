@@ -1,8 +1,8 @@
 """Arquivo que roda o jogo no modo web"""
 
+from collections import defaultdict
 from flask import Flask, request, render_template, session, redirect, url_for
 from models.jogador import Jogador
-#from models.monstros import Zombie, Esqueleto
 from models.item_catalogo import itens
 from routers.combate.interface_web import aplicar_acao, criar_inimigos_nivel
 
@@ -14,11 +14,12 @@ def index():
     """Método para chamar o caminho principal"""
     return render_template("registro.html")
 
-
 @app.route("/jogo", methods=["GET", "POST"])
 def jogo():
     """Função que capturar o nome do jogador"""
-    parte = 0
+    if "parte" not in session:
+        session["parte"] = 1
+    parte = session["parte"]
     prota = Jogador()
     prota.nome = request.form.get("nome")
     prota.armazenar_item(itens["espada_madeira"])
@@ -41,9 +42,12 @@ def jogo():
 
         session["peitoral_malha"].usar_defesa(prota)
 
+    if parte >= 3:
+        session["king_note"] = {"nome": itens["king_note"].nome}
+        session["pocao_vida_g"] = {"nome": itens["pocao_vida_p"].nome}
+
 
     return render_template("jogo.html", nome=prota.nome, parte=1)
-
 
 def verificar_status_protagonista(protagonista):
     """Retorna animal, se tem magia e se tem poção."""
@@ -60,17 +64,20 @@ def verificar_status_protagonista(protagonista):
 def combate(nivel):
     """Executa o combate do primeiro nível."""
     protagonista = session["prota"]
+    parte = nivel
 
     inimigos = session.get("inimigos")
     # Se for o primeiro acesso ou reset do combate
-    if "inimigos" not in session or session["inimigos"] is None or not inimigos:
+    if not inimigos: #"inimigos" not in session or session["inimigos"] is None or
         inimigos = criar_inimigos_nivel(nivel)
         session["inimigos"] = inimigos
 
     #inimigos = session["inimigos"]
     inimigo = inimigos[0]
-
     vida = inimigo["vida"] if isinstance(inimigo, dict) else inimigo.vida
+
+    if int(vida) <= 0:
+        fim_combate(parte)
 
     animal, tem_magia, tem_pocao = verificar_status_protagonista(protagonista)
 
@@ -89,7 +96,7 @@ def combate(nivel):
                 if i["tipo"] == "Magico" and i["ativo"]
             ]
             return render_template(
-                "escolher_item.html", tipo="magia", acao=acao, itens=magias
+                "combate/escolher_item.html", tipo="magia", acao=acao, itens=magias
             )
 
         # Redireciona para tela de escolha de poção
@@ -100,27 +107,30 @@ def combate(nivel):
                 if i["tipo"] == "Pocao" and i["quantidade"] > 0
             ]
             return render_template(
-                "escolher_item.html", tipo="pocao", acao=acao, itens=pocoes
+                "combate/escolher_item.html", tipo="pocao", acao=acao, itens=pocoes
             )
 
         # Aplica ação sem precisar escolher item
         protagonista, inimigos, dano_jogador, dano_inimigo = aplicar_acao(
             acao, protagonista, [inimigo], animal=animal
         )
+        session.update({
+            "prota": protagonista,
+            "inimigos": inimigos,
+            "dano_jogador": dano_jogador,
+            "dano_inimigo": dano_inimigo,
+            "acao": acao,
+            "parte": parte,
+        })
 
-        session["prota"] = protagonista
-        session["inimigos"] = inimigos
-        session["dano_jogador"] = dano_jogador
-        session["dano_inimigo"] = dano_inimigo
-        session["acao"] = acao
+        vida = inimigos[0]["vida"] if isinstance(inimigos[0], dict) else inimigos[0].vida
 
-        if vida <= 0:
-            session.pop("inimigos", None)
-            return render_template("jogo.html", parte = nivel + 1, nivel = nivel + 1)
+        if int(vida) <= 0:
+            fim_combate(parte)
         return redirect(url_for("combate", nivel=nivel))
 
     return render_template(
-        "combate.html",
+        "combate/combate.html",
         nivel=nivel,
         prota=protagonista,
         inimigo=inimigo,
@@ -131,6 +141,12 @@ def combate(nivel):
         dano_inimigo=dano_inimigo,
         acao=acao,
     )
+
+def fim_combate(nivel: int):
+    """Finaliza combate e avança de parte."""
+    session.pop("inimigos", None)
+    session["parte"] = nivel + 1
+    return render_template("jogo.html", parte=nivel+1, nivel=nivel+1)
 
 @app.route("/usar_item", methods=["POST"])
 def usar_item():
@@ -158,6 +174,18 @@ def usar_item():
     session["dano_inimigo"] = dano_inimigo
     session["acao"] = acao
     return redirect(url_for("combate"))
+
+@app.route("/inventario", methods=["GET","POST"])
+def ver_inventario():
+    '''Método que chama o inventario'''
+    prota_inventario = session["prota"]["inventario"]
+    parte = session["parte"]
+
+    grupos = defaultdict(list)
+    for item in prota_inventario:
+        grupos[item["tipo"]].append(item)
+
+    return render_template("historia/inventario.html", inventario=grupos, parte=parte)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,45 @@
+{% extends "partials/base.html" %}
+{% block content %}
+<div id="inventario">
+    <h1>Inventário</h1>
+
+    {% for tipo, itens in inventario.items() %}
+        <h2>{{ tipo }}</h2>
+        <ul>
+            {% for item in itens %}
+                <li>
+                    {{ item["nome"] }} - {{ item["descricao"] }}
+                    <input type="checkbox" id="check_{{ loop.index }}">
+                    <!-- Fazer função para quando checkbox marcado aparecer "Equipado" else "Não equipado" -->
+                    <label for="check_{{ loop.index }}"></label>
+                    <span id="span" style="font-size: 20px; display: none;">&check;</span> <!-- Entidade HTML para marca de seleção -->
+                </li>
+                
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+
+<!-- Criar um botão para sair do inventario -->
+<button id="botao_sair" onclick="sairInv()">Sair</button>
+
+<script>
+    document.getElementById("checkbox").addEventListener("click", function() {
+        var spam = document.getElementById("span");
+        spam.style.display = "none";
+
+    });
+
+    // Passa o inventário Python para o JS
+    var inventario = JSON.parse('{{ inventario | tojson }}');
+    var parte = JSON.parse('{{ parte | tojson | safe }}');
+
+    document.getElementById("botao_sair").addEventListener("click", function() {
+        console.log(inventario);
+        console.log(parte);
+        setTimeout(function sairInv() {
+            window.location.href = "/jogo"
+        }, 5000);
+    });
+</script>
+{% endblock %}
