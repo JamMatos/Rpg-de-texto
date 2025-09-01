@@ -2,7 +2,7 @@
 # from enum import Enum
 
 # class Vida(Enum):
-#     '''Class para criar uma viagem da vida'''
+#     '''Class para criar uma imagem da vida'''
 
 #     CHEIA = "♥"
 #     VAZIO = "♡"
@@ -40,8 +40,12 @@ class Jogador:
 
     def armazenar_item(self, item):
         """Método que armazenar o equipamento para o jogador."""
+        if item in self.inventario:
+            return False
+
         self.inventario.append(item)
         item.ativo = True
+
         if item.tipo == "Arma":
             self.dano_min += item.dano_min
             self.dano_max += item.dano_max

@@ -4,26 +4,33 @@
 
 <div id="controles">
     <h2> ---- Controles ----</h2>
-    <p>1 - Atacar com arma</p>
-    {% if tem_magia %}
-        <p>2 - Atacar com magia</p>
-    {% endif %}
-    {% if tem_pocao %}
-        <p>3 - Usar poção</p>
-    {% endif %}
-    {% if tem_pato %}
-        <p>4 - Usar o pato</p>
-    {% endif %}
+    
+    <form action="" method="post">
+        <p>1 - Atacar com arma</p>
+        <button name="acao" value="1" type="submit">1 - Atacar com arma</button>
+        {% if tem_magia %}
+            <p>2 - Atacar com magia</p>
+            <button name="acao" value="2" type="submit">2- Atacar com magia</button>
+        {% endif %}
+        {% if tem_pocao %}
+            <p>3 - Usar poção</p>
+            <button name="acao" value="3" type="submit">3 - Usar poção</button>
+        {% endif %}
+        {% if tem_pato %}
+            <p>4 - Usar o pato</p>
+            <button name="acao" value="4" type="submit">4 - Usar o pato</button>
+        {% endif %}
+    </form>
 </div>
 
-<div id="entrada-acao">
+<!-- <div id="entrada-acao">
     <form action="" method="post">
         <label for="acao">Digite o número da ação: </label>
             <input type="text" id="acao" name="acao" required>
 
             <input type="submit" value="Enviar">
     </form>
-</div>
+</div> -->
 {% if acao == 1 %}
     <div id="resultado1">
         <p>Você causou um dano de {{ dano_jogador }}.</p>
@@ -37,6 +44,5 @@
 {% elif acao == 4 and tem_pato %}
     {% include "usar_pato.html" %}
 {% endif %}
-
 
 {% endblock %}

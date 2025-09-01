@@ -40,14 +40,15 @@ def jogo():
         session["peitoral_malha"] = {"nome": itens["peitoral_malha"].nome}
         session["pocao_vida_p"] = {"nome": itens["pocao_vida_p"].nome}
 
-        session["peitoral_malha"].usar_defesa(prota)
+        itens["peitoral_malha"].usar_defesa(prota)
+        #session["peitoral_malha"].usar_defesa(prota)
 
     if parte >= 3:
         session["king_note"] = {"nome": itens["king_note"].nome}
         session["pocao_vida_g"] = {"nome": itens["pocao_vida_p"].nome}
 
 
-    return render_template("jogo.html", nome=prota.nome, parte=1)
+    return render_template("jogo.html", nome=prota.nome, parte=parte)
 
 def verificar_status_protagonista(protagonista):
     """Retorna animal, se tem magia e se tem poção."""
@@ -75,9 +76,11 @@ def combate(nivel):
     #inimigos = session["inimigos"]
     inimigo = inimigos[0]
     vida = inimigo["vida"] if isinstance(inimigo, dict) else inimigo.vida
-
+    #print("DEBUG VIDA INIMIGO:", inimigos[0]["vida"])
     if int(vida) <= 0:
-        fim_combate(parte)
+        return fim_combate(parte)
+    # else:
+    #     print("Não entrou no if")
 
     animal, tem_magia, tem_pocao = verificar_status_protagonista(protagonista)
 
@@ -125,8 +128,11 @@ def combate(nivel):
 
         vida = inimigos[0]["vida"] if isinstance(inimigos[0], dict) else inimigos[0].vida
 
+        #print("DEBUG VIDA INIMIGO:", inimigos[0]["vida"])
         if int(vida) <= 0:
-            fim_combate(parte)
+            return fim_combate(parte)
+        # else:
+        #     print("Não entrou no if")
         return redirect(url_for("combate", nivel=nivel))
 
     return render_template(
@@ -146,7 +152,7 @@ def fim_combate(nivel: int):
     """Finaliza combate e avança de parte."""
     session.pop("inimigos", None)
     session["parte"] = nivel + 1
-    return render_template("jogo.html", parte=nivel+1, nivel=nivel+1)
+    return redirect(url_for("jogo", parte=nivel+1, nivel=nivel+1))
 
 @app.route("/usar_item", methods=["POST"])
 def usar_item():
@@ -180,12 +186,13 @@ def ver_inventario():
     '''Método que chama o inventario'''
     prota_inventario = session["prota"]["inventario"]
     parte = session["parte"]
+    nivel = parte
 
     grupos = defaultdict(list)
     for item in prota_inventario:
         grupos[item["tipo"]].append(item)
 
-    return render_template("historia/inventario.html", inventario=grupos, parte=parte)
+    return render_template("historia/inventario.html", inventario=grupos, parte=parte, nivel=nivel)
 
 if __name__ == "__main__":
     app.run(debug=True)

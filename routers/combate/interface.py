@@ -1,5 +1,6 @@
 '''Arquivo com interface de batalha'''
 import random
+import os
 from models.item import Magico, Pocao
 
 def interface_batalha(nivel:int, inimigos: list, prota: object):
@@ -134,7 +135,9 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
         elif acao == 4 and pato is True:
             input("Você como último recurso utiliza do pato para atacar.")
             input("O pato corre em direção ao boss...")
-            input("Então ele tira de debaixo da asa, uma bomba nuclear?")
+            input("Então ele tira de debaixo da asa")
+            input("Uma bomba nuclear???")
+            os.system("cls")
             input("KABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOM!")
             input(f"{animal.nome} explodiu matando o chefão.")
             inimigo.vida = 0

@@ -21,13 +21,12 @@
 </div>
 
 <!-- Criar um botão para sair do inventario -->
-<button id="botao_sair" onclick="sairInv()">Sair</button>
+<button id="botao_sair" onclick="sairInv()" type="submit">Sair</button>
 
 <script>
     document.getElementById("checkbox").addEventListener("click", function() {
         var spam = document.getElementById("span");
         spam.style.display = "none";
-
     });
 
     // Passa o inventário Python para o JS
@@ -37,9 +36,10 @@
     document.getElementById("botao_sair").addEventListener("click", function() {
         console.log(inventario);
         console.log(parte);
-        setTimeout(function sairInv() {
+
+        function sairInv() {
             window.location.href = "/jogo"
-        }, 5000);
+        };
     });
 </script>
 {% endblock %}
