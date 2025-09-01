@@ -61,28 +61,6 @@ def test_criacao_itens(classe, atributos, inventario):
             for attr in atributos:
                 assert hasattr(item, attr), f"{nome} deveria ter {attr}"
 
-    # for nome, item in itens_loja.items():
-    #     if isinstance(item, Arma):
-    #         assert hasattr(item, "preco")
-    #         assert hasattr(item, "dano_min")
-    #         assert hasattr(item, "dano_max")
-    #     elif isinstance(item, Magico):
-    #         assert hasattr(item, "preco")
-    #         assert hasattr(item, "atributo")
-    #     elif isinstance(item, Pocao):
-    #         assert hasattr(item, "preco")
-    #         assert hasattr(item, "atributo")
-    #         assert hasattr(item, "valor")
-    #         assert hasattr(item, "alvo")
-    #     elif isinstance(item, Acessorio):
-    #         assert hasattr(item, "preco")
-    #         assert hasattr(item, "atributo")
-    #         assert hasattr(item, "valor")
-    #     elif isinstance(item, Equipamento):
-    #         assert hasattr(item, "preco")
-    #         assert hasattr(item, "atributo")
-    #         assert hasattr(item, "valor")
-
 # -------------------- Testes Integração --------------------
 def test_conectar_itens_ao_prota():
     """
