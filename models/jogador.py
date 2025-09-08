@@ -1,5 +1,4 @@
 """Arquivo para a class do jogador"""
-# from enum import Enum
 
 # class Vida(Enum):
 #     '''Class para criar uma imagem da vida'''
@@ -33,10 +32,14 @@ class Jogador:
         self.dano_base_min = 3
         self.dano_base_max = 5
         self.defesa_base = 0
-        #self.vida_base = vida
 
     def __str__(self):
         return f"{self.nome}"
+
+    def ativar_item(self, item):
+        """Método que ativar o item adicionado ao inventário"""
+        if item in self.inventario:
+            item.ativo = True
 
     def armazenar_item(self, item):
         """Método que armazenar o equipamento para o jogador."""
@@ -44,12 +47,13 @@ class Jogador:
             return False
 
         self.inventario.append(item)
-        item.ativo = True
+        item.ativo = False
 
         if item.tipo == "Arma":
             self.dano_min += item.dano_min
             self.dano_max += item.dano_max
             self.dano = f"{self.dano_min} - {self.dano_max}"
+        return item
 
     def recalcular_status(self):
         """Função que recalcular os dados do personagem."""
@@ -60,22 +64,25 @@ class Jogador:
         else:
             self.dano_min = self.dano_base_min
             self.dano_max = self.dano_base_max
+
         self.defesa = self.defesa_base
-        #self.vida = self.vida_base
 
         for item in self.inventario:
             if item.ativo and item.tipo == "Arma":
                 self.dano_min += item.dano_min
                 self.dano_max += item.dano_max
             elif item.ativo and item.tipo == "Acessório":
-                if item.atributo == "defesa":
+                if item.atributo.lower() == "defesa":
                     self.defesa += item.valor
-                elif item.atributo == "vida":
+                elif item.atributo.lower() == "vida":
                     self.vida += item.valor
-                elif item.atributo == "dano":
+                elif item.atributo.lower() == "dano":
                     self.dano_min += int(item.valor / 2)
                     self.dano_max += int(item.valor / 2)
             elif item.ativo and item.tipo == "Armadura":
-                self.defesa += item.valor
+                if item.atributo.lower() == "defesa":
+                    self.defesa += item.valor
+                elif item.atributo.lower() == "vida":
+                    self.vida += item.valor
 
         self.dano = f"{self.dano_min} - {self.dano_max}"

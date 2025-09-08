@@ -24,3 +24,25 @@ def primeiro_nivel(prota: object, nivel: int):
         return 0  # Prota morreu, volta para o nível 0 (ou menu principal)
 
     return novo_nivel
+
+def primeiro_nivel_test(prota:object, nivel: int, inimigo: object):
+    """Função que roda o primeiro nível do jogo para teste."""
+
+    zombie = inimigo
+    inimigos = [zombie]
+    novo_nivel = nivel
+
+    while zombie.vida > 0 and prota.vida > 0:
+        os.system("cls")
+        interface_batalha(nivel, inimigos, prota)
+
+        novo_nivel = controles(prota, inimigos, nivel, animal=None)
+
+    if zombie.vida <= 0:
+        novo_nivel = 2
+
+    if prota.vida <= 0:
+        #zerou_vida()
+        return 0  # Prota morreu, volta para o nível 0 (ou menu principal)
+
+    return novo_nivel

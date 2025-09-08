@@ -10,11 +10,11 @@ from routers.niveis.boss_nivel import boss_fight
 from routers.inventario import acessar_inventario
 from routers.fim_de_jogo import final_do_jogo
 from routers.mapa import mostrar_mapa
-from routers.loja import loja
+from routers.loja import acessar_loja
+from routers.pato import adotar_pato
 from models.jogador import Jogador
 from models.item_catalogo import itens
 from models.animal_catalogo import pato as pato_pet
-
 
 CAMINHO_CONQUISTAS = "routers/conquistas/conquistas.json"
 
@@ -31,14 +31,11 @@ while prota.nome == "Fulano":
 # Definindo inicio do jogo
 NIVEL = 1
 
-
 def verificar_status(jogador: object, nivel: int) -> bool:
     """Função se verificar se o jogo deve continuar ou não."""
     return jogador.vida < 0 and nivel == 0
 
-
 while prota.vida > 0 and NIVEL != 0:
-    loja(prota)
     os.system("cls")
     input(
         "Você é um jovem fazendeiro cuidando das terras que antes foram dos seus pais, "
@@ -50,6 +47,7 @@ while prota.vida > 0 and NIVEL != 0:
 
     # Definindo mundo
     prota.armazenar_item(itens["espada_madeira"])
+    prota.ativar_item(itens["espada_madeira"])
 
     mostrar_mapa(NIVEL)
     input(
@@ -60,7 +58,9 @@ while prota.vida > 0 and NIVEL != 0:
     while NIVEL == 1:
         resultado = primeiro_nivel(prota, NIVEL)
         NIVEL = resultado
-    # if conquistas["primeira_morte"]:
+
+    prota.dinheiro += 30
+
     input("🎉 Conquista desbloqueada: Matou seu primeiro inimigo!")
     conquistas["primeira_morte"] = True
     with open(CAMINHO_CONQUISTAS, "w", encoding="utf-8") as f:
@@ -77,7 +77,9 @@ while prota.vida > 0 and NIVEL != 0:
     prota.armazenar_item(itens["peitoral_malha"])
     prota.armazenar_item(itens["pocao_vida_p"])
 
+    acessar_loja(prota, NIVEL)
     acessar_inventario(prota)
+
     prota.recalcular_status()
     itens["peitoral_malha"].usar_defesa(prota)
 
@@ -94,37 +96,20 @@ while prota.vida > 0 and NIVEL != 0:
     if verificar_status(prota, NIVEL):
         break
 
+    os.system("cls")
+
+    prota.dinheiro += 40
     input(
         "Você encontrou um livro magenta e alguns frascos "
         "com o mesmo líquido vermelho, só que maiores."
     )
-    adotar = input(
-            "Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) "
-        ).lower()
-    while adotar not in ("n", "s"):
-        adotar = input(
-            "Saindo da câmara, você encontra um pato preso\nDeseja adotá-lo? (S/N) "
-        ).lower()
-    if adotar == "s":
-        pato_pet.ativo = True
-        pato_pet.novo_nome()
-        input(
-            f"{pato_pet.nome} aumentou sua {pato_pet.qualidade} em {pato_pet.valor}"
-        )
-        prota.vida += pato_pet.valor
-        prota.companheiro = True
-    elif adotar == "n":
-        input("Você matou o pato.")
-        input("Comendo ele você ganhou mais dano.")
-        prota.companheiro = False
-        prota.dano_min = prota.dano_min + 10
-        prota.dano_max = prota.dano_max + 10
-        prota.dano = f"{prota.dano_min} - {prota.dano_max}"
-        prota.recalcular_status()
+    # Adotar o pato
+    adotar_pato(prota)
 
     prota.armazenar_item(itens["king_note"])
     prota.armazenar_item(itens["pocao_vida_g"])
 
+    acessar_loja(prota, NIVEL)
     acessar_inventario(prota)
     prota.recalcular_status()
 
@@ -141,6 +126,17 @@ while prota.vida > 0 and NIVEL != 0:
     if verificar_status(prota, NIVEL):
         break
 
+    if itens["espada_madeira"] in prota.inventario and itens["espada_madeira"].ativo is True:
+        input("Parabêns, você derrotou o fantasma usando a espada de madeira.")
+        input("Você conseguiu o pingente do macaco.")
+        conquistas["fantasma_madeira"] = True
+        with open(CAMINHO_CONQUISTAS, "w", encoding="utf-8") as f:
+            json.dump(conquistas, f, indent=4)
+        prota.armazenar_item(itens["pingente_do_macaco"])
+
+    os.system("cls")
+
+    prota.dinheiro += 40
     input(
         "Ao derrotar o fantasma, ele dropa uma espada prateada brilhante coberta de gosma."
     )
@@ -151,6 +147,7 @@ while prota.vida > 0 and NIVEL != 0:
     itens["espada_fantasma"].ativo = False
     prota.armazenar_item(itens["pocao_energia"])
     prota.armazenar_item(itens["gold_rain"])
+    acessar_loja(prota, NIVEL)
     acessar_inventario(prota)
     prota.recalcular_status()
 
@@ -165,14 +162,14 @@ while prota.vida > 0 and NIVEL != 0:
         resultado = boss_fight(prota, NIVEL, pato_pet)
         NIVEL = resultado
 
+    if verificar_status(prota, NIVEL):
+        break
+
     # if not conquistas["salvou_irmao"]:
     input("🎉 Conquista desbloqueada: Resgatou seu irmão!")
     conquistas["salvou_irmao"] = True
     with open(CAMINHO_CONQUISTAS, "w", encoding="utf-8") as f:
         json.dump(conquistas, f, indent=4)
-
-    if verificar_status(prota, NIVEL):
-        break
 
     final_do_jogo()
     break

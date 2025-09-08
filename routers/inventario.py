@@ -40,6 +40,9 @@ def show_inventario(inventario, prota):
                 )
                 tipos[item.tipo].append(item)
 
+            contador = 1
+            mapa_indices = []
+
             for tipo, itens in tipos.items():
                 if itens:
                     print(f"\n---- {tipo} ----")
@@ -47,23 +50,23 @@ def show_inventario(inventario, prota):
                         status = "Equipado" if item.ativo else "Não equipado"
                         if tipo == "Arma":
                             print(
-                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"{contador}. {item.nome} - {item.descricao} "
                                 f"- Dano de {item.dano_min} até {item.dano_max} ({status})"
                             )
                         elif tipo == "Acessório":
                             print(
-                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"{contador}. {item.nome} - {item.descricao} "
                                 f"- Benefício de {item.valor} {item.atributo} ({status})"
                             )
                         elif tipo == "Mágico":
                             print(
-                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"{contador}. {item.nome} - {item.descricao} "
                                 f"- Dano de {item.valor} com custo de {item.custo} "
                                 f"de energia ({status})"
                             )
                         elif tipo == "Poção":
                             print(
-                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"{contador}. {item.nome} - {item.descricao} "
                                 f"- Quantidade: {item.quantidade} "
                                 f"- Essa é uma poção para usar no {item.alvo} "
                                 f"\ncausando o atributo de {item.atributo} "
@@ -71,10 +74,13 @@ def show_inventario(inventario, prota):
                             )
                         elif tipo == "Armadura":
                             print(
-                                f"{item.idx}. {item.nome} - {item.descricao} "
+                                f"{contador}. {item.nome} - {item.descricao} "
                                 "- Essa é uma armadura que melhora sua "
                                 f"{item.atributo} em {item.valor} ({status})"
                             )
+
+                        mapa_indices.append(item)
+                        contador += 1
 
         print("\nDigite o número do equipamento que deseja equipar/desequipar")
         try:
@@ -86,8 +92,8 @@ def show_inventario(inventario, prota):
         if retorno == 0:
             return
 
-        if 1 <= retorno <= len(inventario):
-            item_escolhido = inventario[retorno - 1]
+        if 1 <= retorno <= len(mapa_indices):
+            item_escolhido = mapa_indices[retorno - 1]
             if not item_escolhido.ativo:
                 # Verifica limites antes de equipar
                 if item_escolhido.tipo == "Arma":
@@ -115,6 +121,18 @@ def show_inventario(inventario, prota):
                     ):
                         input(
                             "Você já tem 2 itens mágicos equipados. Desequipe um para trocar."
+                        )
+                        continue
+                elif item_escolhido.tipo == "Armadura":
+                    if any(
+                        i.tipo == "Armadura"
+                        and i.local == item_escolhido.local
+                        and i.ativo
+                        for i in inventario
+                    ):
+                        input(
+                            f"Você já tem 1 armadura de {item_escolhido.local} equipada. "
+                            "Desequipe para trocar."
                         )
                         continue
             item_escolhido.ativo = not item_escolhido.ativo

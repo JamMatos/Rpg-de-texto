@@ -7,7 +7,8 @@ CAMINHO_CONQUISTAS = "routers/conquistas/conquistas.json"
 # Conquistas iniciais zeradas
 conquistas_iniciais = {
     "primeira_morte": False,
-    "salvou_irmao": False
+    "salvou_irmao": False,
+    "fantasma_madeira": False,
 }
 
 # Criar o arquivo caso não exista

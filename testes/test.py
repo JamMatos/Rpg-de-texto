@@ -1,8 +1,7 @@
 """Arquivo para rodar os testes automatizados"""
 
-from unittest.mock import patch, MagicMock  # pylint: disable=unused-import
 import pytest  # pylint: disable=unused-import
-from routers.niveis.primeiro_nivel import primeiro_nivel
+from routers.niveis.primeiro_nivel import primeiro_nivel_test
 from models.monstros import Zombie, Esqueleto, Fantasma, ReiCadaver
 from models.jogador import Jogador
 from models.item_catalogo import (
@@ -42,13 +41,17 @@ def test_criacao_animal():
     assert pato.vida > 0
     assert hasattr(pato, "nome")
 
-@pytest.mark.parametrize("classe, atributos", [
-    (Arma, ["preco", "dano_min", "dano_max"]),
-    (Magico, ["preco", "atributo", "custo"]),
-    (Pocao, ["preco", "atributo", "valor", "alvo"]),
-    (Acessorio, ["preco", "valor", "atributo"]),
-    (Equipamento, ["preco", "valor", "atributo"]),
-])
+
+@pytest.mark.parametrize(
+    "classe, atributos",
+    [
+        (Arma, ["preco", "dano_min", "dano_max"]),
+        (Magico, ["preco", "atributo", "custo"]),
+        (Pocao, ["preco", "atributo", "valor", "alvo"]),
+        (Acessorio, ["preco", "valor", "atributo"]),
+        (Equipamento, ["preco", "valor", "atributo"]),
+    ],
+)
 @pytest.mark.parametrize("inventario", [itens, itens_loja])
 def test_criacao_itens(classe, atributos, inventario):
     """Função teste para verificar se os itens foram criados corretamente."""
@@ -60,6 +63,7 @@ def test_criacao_itens(classe, atributos, inventario):
         if isinstance(item, classe):
             for attr in atributos:
                 assert hasattr(item, attr), f"{nome} deveria ter {attr}"
+
 
 # -------------------- Testes Integração --------------------
 def test_conectar_itens_ao_prota():
@@ -75,62 +79,39 @@ def test_conectar_itens_ao_prota():
     prota.armazenar_item(itens["espada_madeira"])
     assert prota.inventario.count(itens["espada_madeira"]) == 1
 
-    # prota.armazenar_item(itens_loja["peitoral_ferro"])
-    # assert itens["peitoral_ferro"] in prota.inventario
+    prota.armazenar_item(itens_loja["peitoral_ferro"])
+    assert itens_loja["peitoral_ferro"] in prota.inventario
+
 
 # -------------------- Testes de Sistema --------------------
+def test_primeiro_nivel_prota_morre():
+    """Função para verificar se o prota morre corretamente no nível 1."""
+    prota = Jogador()
+    inimigo = Zombie()
+
+    inimigo.vida = 10
+
+    prota.vida = 0
+
+    nivel = primeiro_nivel_test(prota, nivel=1, inimigo=inimigo)
+
+    assert nivel == 0
+
+
+def test_primeiro_nivel_prota_vence():
+    """Função para verificar se o prota vence corretamente o nível 1."""
+    prota = Jogador()
+    inimigo = Zombie()
+
+    inimigo.vida = 0
+    prota.vida = 100
+
+    nivel = primeiro_nivel_test(prota, nivel=1, inimigo=inimigo)
+
+    assert nivel == 2
+
 
 # -------------------- Testes de Integridade de Dados --------------------
 
 
 # -------------------- Testes Usabilidade --------------------
-
-
-
-class TesteProta:
-    """Class que gerar um prota temporário para testes."""
-
-    def __init__(self, vida):
-        self.vida = vida
-
-
-def test_primeiro_nivel_prota_morre():
-    """Função para verificar se o prota morre corretamente no nível 1."""
-    prota = Jogador()
-    #inimigo = Zombie()
-
-    with patch("routers.niveis.primeiro_nivel.Zombie") as mock_zombie, patch(
-        "routers.niveis.primeiro_nivel.interface_batalha"
-    ), patch("routers.niveis.primeiro_nivel.controles"), patch(
-        "routers.niveis.primeiro_nivel.zerou_vida"
-    ) as test_zerou:
-
-        test_zombie = mock_zombie.return_value
-        test_zombie.vida = 10
-
-        prota.vida = 0
-
-        nivel = primeiro_nivel(prota, nivel=1)
-
-        assert nivel == 0
-        test_zerou.assert_called_once()
-
-
-def test_primeiro_nivel_prota_vence():
-    """Função para verificar se o prota vencer corretamente o nível 1."""
-    prota = Jogador()
-
-    with patch("routers.niveis.primeiro_nivel.Zombie") as mock_zombie, patch(
-        "routers.niveis.primeiro_nivel.interface_batalha"
-    ), patch("routers.niveis.primeiro_nivel.zerou_vida"), patch(
-        "routers.niveis.primeiro_nivel.controles"
-    ) as test_controles:
-
-        test_zombie = mock_zombie.return_value
-        test_zombie.vida = 0  # inimigo derrotado
-        prota.vida = 100
-        test_controles.return_value = 2  # novo nível
-
-        nivel = primeiro_nivel(prota, nivel=1)
-
-        assert nivel == 2

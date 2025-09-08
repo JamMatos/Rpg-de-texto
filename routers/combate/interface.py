@@ -19,7 +19,7 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
     print(f"Seu nome: {prota.nome}")
     print(f"Vida: {prota.vida}")
     if prota.defesa > 0:
-        print("# Cada 2 pontos de defesa o dano sofrido diminuir em 1.")
+        print("# Cada 2 pontos de defesa o dano sofrido diminui em 1.")
         print(f"Defesa: {prota.defesa}")
     print(f"Energia: {prota.energia}")
     print(f"Dano: {prota.dano}\n")
@@ -124,7 +124,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
                 f"de {pocao_escolhida.atributo} para você.")
             elif pocao_escolhida.atributo == "Energia":
                 prota.energia += pocao_escolhida.valor
-                print(f"\n Você usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor} "
+                print(f"\nVocê usou {pocao_escolhida.nome} e causou {pocao_escolhida.valor} "
                 f"de {pocao_escolhida.atributo} para você.")
 
             #Diminuir a quantidade da poção após o uso

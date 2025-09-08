@@ -163,10 +163,12 @@ class Equipamento(Item):
     
     Inputs:
     - Atributo: Qual efeito a poção produz;
-    - Valor: Quantidade do atributo que a porção produz;'''
-    def __init__(self, nome, descricao, atributo, valor, preco, ativo = False):
+    - Valor: Quantidade do atributo que a porção produz;
+    - Local: Parte do corpo onde ficará a armadura;'''
+    def __init__(self, nome, descricao, atributo, valor, preco, local, ativo = False):
         self.atributo = atributo  # Cura, dano, paralisia
         self.valor = valor  # Quantidade que dá do seu atributo
+        self.local = local
         super().__init__(nome, descricao, "Armadura", preco, ativo)
 
     def to_dict(self):
