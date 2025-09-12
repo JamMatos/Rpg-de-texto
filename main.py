@@ -33,7 +33,7 @@ NIVEL = 1
 
 def verificar_status(jogador: object, nivel: int) -> bool:
     """Função se verificar se o jogo deve continuar ou não."""
-    return jogador.vida < 0 and nivel == 0
+    return jogador.vida < 0 or nivel == 0
 
 while prota.vida > 0 and NIVEL != 0:
     os.system("cls")
@@ -78,9 +78,9 @@ while prota.vida > 0 and NIVEL != 0:
     prota.armazenar_item(itens["pocao_vida_p"])
 
     acessar_loja(prota, NIVEL)
+    os.system("cls")
     acessar_inventario(prota)
-
-    prota.recalcular_status()
+    prota.recalcular_status("main")
     itens["peitoral_malha"].usar_defesa(prota)
 
     os.system("cls")
@@ -110,8 +110,9 @@ while prota.vida > 0 and NIVEL != 0:
     prota.armazenar_item(itens["pocao_vida_g"])
 
     acessar_loja(prota, NIVEL)
+    os.system("cls")
     acessar_inventario(prota)
-    prota.recalcular_status()
+    prota.recalcular_status("main")
 
     os.system("cls")
     mostrar_mapa(NIVEL)
@@ -136,7 +137,7 @@ while prota.vida > 0 and NIVEL != 0:
 
     os.system("cls")
 
-    prota.dinheiro += 40
+    prota.dinheiro += 50
     input(
         "Ao derrotar o fantasma, ele dropa uma espada prateada brilhante coberta de gosma."
     )
@@ -147,9 +148,11 @@ while prota.vida > 0 and NIVEL != 0:
     itens["espada_fantasma"].ativo = False
     prota.armazenar_item(itens["pocao_energia"])
     prota.armazenar_item(itens["gold_rain"])
+
     acessar_loja(prota, NIVEL)
+    os.system("cls")
     acessar_inventario(prota)
-    prota.recalcular_status()
+    prota.recalcular_status("main")
 
     os.system("cls")
     mostrar_mapa(NIVEL)

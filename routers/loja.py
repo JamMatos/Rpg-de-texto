@@ -11,7 +11,7 @@ def acessar_loja(prota, nivel):
     else:
         input("O coelho vendedor reapareceu.")
 
-    inv = input("Deseja acessar a loja? (S/N): ").lower()
+    inv = input("Deseja acessar a loja do coelho? (S/N): ").lower()
     if inv == "s":
         input("Ok, acessando a loja.")
         os.system("cls")
@@ -20,7 +20,7 @@ def acessar_loja(prota, nivel):
         input("Ok, sem acessar a loja.")
     while inv not in ["s", "n"]:
         print("Entrada inválida. Digite S ou N.")
-        inv = input("Deseja acessar a loja? (S/N): ").lower()
+        inv = input("Deseja acessar a loja do coelho? (S/N): ").lower()
         if inv == "s":
             input("Ok, acessando a loja.")
             os.system("cls")
@@ -41,6 +41,7 @@ def show_loja(prota):
             "Armadura": [],
             "Mágico": [],
             "Poção": [],
+            "Místico": [],
         }
 
         lista_itens = []
@@ -94,6 +95,12 @@ def show_loja(prota):
                             f"provocando uma quantidade de {item.valor} "
                             f"{preco_info} ({status})"
                         )
+                    elif tipo == "Místico":
+                        if prota.dinheiro >= item.preco:
+                            print(
+                                f"{contador}. {item.nome} - {item.descricao} "
+                                f"{preco_info} ({status})"
+                            )
 
                     mapa_indices.append(item)
                     contador += 1

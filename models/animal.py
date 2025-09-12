@@ -30,6 +30,8 @@ class Pato(Animal):
         escolha = input("Deseja dar um nome para o pato: (S/N) ").lower()
         if escolha == 's':
             novo_nome = input("Digite o novo nome do pato: ")
+            while novo_nome == "":
+                novo_nome = input("Digite o novo nome do pato: ")
             self.nome = novo_nome
         else:
             input("Ok, o pato se chamará Pato")

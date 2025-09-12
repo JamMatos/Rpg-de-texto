@@ -55,7 +55,7 @@ class Jogador:
             self.dano = f"{self.dano_min} - {self.dano_max}"
         return item
 
-    def recalcular_status(self):
+    def recalcular_status(self, local):
         """Função que recalcular os dados do personagem."""
         # Reseta os valores
         if self.companheiro is False:
@@ -75,7 +75,10 @@ class Jogador:
                 if item.atributo.lower() == "defesa":
                     self.defesa += item.valor
                 elif item.atributo.lower() == "vida":
-                    self.vida += item.valor
+                    if local == "main":
+                        self.vida += item.valor
+                    else:
+                        pass
                 elif item.atributo.lower() == "dano":
                     self.dano_min += int(item.valor / 2)
                     self.dano_max += int(item.valor / 2)
@@ -83,6 +86,12 @@ class Jogador:
                 if item.atributo.lower() == "defesa":
                     self.defesa += item.valor
                 elif item.atributo.lower() == "vida":
-                    self.vida += item.valor
+                    if local == "main":
+                        self.vida += item.valor
+                    else:
+                        pass
+                elif item.atributo.lower() == "dano":
+                    self.dano_min += int(item.valor / 2)
+                    self.dano_max += int(item.valor / 2)
 
         self.dano = f"{self.dano_min} - {self.dano_max}"

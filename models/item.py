@@ -182,3 +182,13 @@ class Equipamento(Item):
     def usar_defesa(self, prota):
         '''Método para calcular a defesa do jogador'''
         prota.defesa = self.valor
+
+class Mistico(Item):
+    """Class para itens especiais"""
+    def __init__(self, nome, habilidade, descricao, preco, ativo = False):
+        self.habilidade = habilidade
+        super().__init__(nome, descricao, "Místico", preco, ativo)
+
+    def acao(self):
+        """Método que invocar a ação especial de cada objeto dessa class"""
+        self.habilidade(self)

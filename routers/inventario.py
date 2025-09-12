@@ -1,6 +1,7 @@
 """Arquivo para o sistema de inventário"""
 
 import os
+from routers.bonus import espelho
 
 
 def show_inventario(inventario, prota):
@@ -11,7 +12,7 @@ def show_inventario(inventario, prota):
 
     retorno = 1
     while retorno != 0:
-        prota.recalcular_status()
+        prota.recalcular_status("inv")
 
         print("----- Seus dados -----")
         print(f"Seu dano: {prota.dano}.")
@@ -78,6 +79,11 @@ def show_inventario(inventario, prota):
                                 "- Essa é uma armadura que melhora sua "
                                 f"{item.atributo} em {item.valor} ({status})"
                             )
+                        elif tipo == "Místico":
+                            print(
+                                f"{contador}. {item.nome} - {item.descricao} "
+                                f"({status})"
+                            )
 
                         mapa_indices.append(item)
                         contador += 1
@@ -135,6 +141,9 @@ def show_inventario(inventario, prota):
                             "Desequipe para trocar."
                         )
                         continue
+                elif item_escolhido.tipo == "Místico":
+                    if item.ativo:
+                        espelho(prota)
             item_escolhido.ativo = not item_escolhido.ativo
         else:
             input("Número inválido. Pressione Enter para continuar.")

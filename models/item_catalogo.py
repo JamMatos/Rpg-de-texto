@@ -1,11 +1,26 @@
 """Arquivo onde ficar os items para serem chamados."""
 
-# import random
-from models.item import Arma, Acessorio, Magico, Pocao, Equipamento
+from models.item import Arma, Acessorio, Magico, Mistico, Pocao, Equipamento
+from routers.bonus import espelho
+# ----------------------------- Itens totais -----------------------------
+# Contador
+# Arma: 3
+# Acessorio: 4
+# Magico: 3
+# Pocao: 4
+# Equipamento: 3
 
 # ----------------------------- Itens obtidos durante o jogo -----------------------------
+# Contador
+# Arma: 2
+# Acessorio: 2
+# Magico: 2
+# Pocao: 3
+# Equipamento: 1
 
-espada_madeira = Arma("Espada de Madeira", "Uma espada velha de madeira", 30, 7, 10)
+espada_madeira = Arma(
+    "Espada de Madeira", "Uma espada velha de madeira", 30, 7, 10
+    )
 
 espada_fantasma = Arma(
     "Ectosword", "Uma lámina prateada imbuido com ectoplasma", 50, 15, 20
@@ -101,6 +116,12 @@ itens = {
 }
 
 # ----------------------------- Itens da Loja -----------------------------
+# Contador
+# Arma: 1
+# Acessorio: 2
+# Magico: 1
+# Pocao: 1
+# Equipamento: 2
 
 peitoral_ferro = Equipamento(
     "Peitoral de ferro", "Um peitoral feito de ferro", "Defesa", 12, 30, "Peitoral"
@@ -132,17 +153,34 @@ por_do_sol = Magico(
     "Um belissimo e grandioso ataque de luz",
     "Uma luz",
     80,
-    90,
+    40,
     50,
 )
 
 saia_diva_em_dobro = Equipamento(
     "Saia Diva em Dobro",
-    "Uma saia florida(Você se sente bonita?)",
-    "Vida",
-    80,
-    50,
+    "Uma saia florida(Do u fell bonita?)",
+    "Vida", #Defesa
+    80, #40
+    50, #90
     "Calça",
+)
+
+pocao_dano = Pocao(
+    nome="Poção de dano",
+    descricao="Um frasco circular com um líquido roxo",
+    atributo="Dano",
+    valor=25,
+    preco=30,
+    alvo="Inimigo",
+    quantidade=3,
+)
+
+espelho_espelho_eu = Mistico(
+    nome="Espelho Espelho Eu",
+    habilidade=espelho,
+    descricao="Um espelho de bolso",
+    preco=100,
 )
 
 itens_loja = {
@@ -152,4 +190,6 @@ itens_loja = {
     "por_do_sol": por_do_sol,
     "saia_diva_em_dobro": saia_diva_em_dobro,
     "espada_ferro": espada_ferro,
+    "pocao_dano": pocao_dano,
+    "espelho_espelho_seu": espelho_espelho_eu,
 }

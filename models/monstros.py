@@ -32,6 +32,6 @@ class Fantasma(Monstro):
 
 class ReiCadaver(Monstro):
     '''Class que definir a criatura Rei Cadáver.'''
-    def __init__(self, nome = "Rei Cadáver", vida = 200, dano = "30 - 45",
-    dano_min = 30, dano_max = 45):
+    def __init__(self, nome = "Rei Cadáver", vida = 200, dano = "30 - 42",
+    dano_min = 30, dano_max = 42):
         super().__init__(nome, vida, dano, dano_min, dano_max)

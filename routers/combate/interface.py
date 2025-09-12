@@ -4,7 +4,7 @@ import os
 from models.item import Magico, Pocao
 
 def interface_batalha(nivel:int, inimigos: list, prota: object):
-    '''Função para criar a Interface das batalhas'''
+    '''Função para criar a Interface das batalhas.'''
     if nivel == 4:
         print("----- Boss Fight -----")
     else:
@@ -16,6 +16,7 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
         print(f"Vida: {inimigo.vida}")
         print(f"Dano: {inimigo.dano}\n")
 
+    prota.recalcular_status("")
     print(f"Seu nome: {prota.nome}")
     print(f"Vida: {prota.vida}")
     if prota.defesa > 0:
@@ -41,7 +42,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
     if any(isinstance(item, Pocao) and item.ativo for item in prota.inventario):
         pocao = True
         print("3 - Usar poção")
-    if prota.vida < 10 and nivel == 4:
+    if prota.vida < 10 and nivel == 4 and animal.ativo is True:
         pato = True
         print("4 - Usar o pato")
 
@@ -78,6 +79,9 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
 
             try:
                 escolha = int(input("Escolha a magia que deseja usar: "))
+                if escolha == 0:
+                    input("Você decidiu não usar magias.")
+                    return
                 magia_escolhida = magias_disponiveis[escolha - 1]
             except (ValueError, IndexError):
                 input("Escolha inválida. Pressione Enter para continuar")
@@ -106,7 +110,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
             try:
                 escolha = int(input("Escolha a poção que deseja usar: "))
                 if escolha == 0:
-                    print("Você decidiu não usar nenhuma poção.")
+                    input("Você decidiu não usar nenhuma poção.")
                     return
 
                 pocao_escolhida = pocoes_disponiveis[escolha - 1]
@@ -133,7 +137,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
             sucesso = True
 
         elif acao == 4 and pato is True:
-            input("Você como último recurso utiliza do pato para atacar.")
+            input("Você, como último recurso, utiliza do pato para atacar.")
             input("O pato corre em direção ao boss...")
             input("Então ele tira de debaixo da asa")
             input("Uma bomba nuclear???")
@@ -150,7 +154,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
     try:
         acao = int(input("Digite o número da ação: "))
         if acao < 1: # or acao > len(inimigos):
-            raise ValueError("Entrada inválida. Digite apenas ações possíveis")
+            input("Entrada inválida. Digite apenas ações possíveis")
     except ValueError:
         input("Entrada inválida. Digite apenas ações possíveis")
 
@@ -161,7 +165,7 @@ def controles(prota, inimigos: list, nivel:int, animal: object):
                 inimigo_escolhido = inimigos[escolha - 1]
 
                 if escolha < 1 or escolha > len(inimigos):
-                    raise ValueError("Entrada inválida. Digite apenas ações possíveis")
+                    input("Entrada inválida. Digite apenas ações possíveis")
 
                 if acao and escolha:
                     executar_acao(acao, inimigo_escolhido)
