@@ -26,7 +26,7 @@ def interface_batalha(nivel:int, inimigos: list, prota: object):
     print(f"Dano: {prota.dano}\n")
 
 
-def controles(prota, inimigos: list, nivel:int, animal: object):
+def controles(prota: object, inimigos: list, nivel:int, animal: object):
     '''Função que chama o sistema de combate.'''
 
     magia = False

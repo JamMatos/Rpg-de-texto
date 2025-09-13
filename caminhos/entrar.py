@@ -45,12 +45,14 @@ def registro():
     inptu = tk.Entry(janela, width=30)
     inptu.pack(pady=5)
 
+    resposta = tk.StringVar()
+
     def entrar():
-        """Chamar a matrix"""
-        resposta = inptu.get()
-        if resposta:
+        """Pega o valor do input"""
+
+        if inptu.get().strip():
+            resposta.set(inptu.get())
             janela.destroy()
-            return resposta
         else:
             messagebox.showwarning(
                 "Campo Obrigatório", "Por favor, preencha este campo."
@@ -62,3 +64,4 @@ def registro():
     botoa.pack(pady=10)
 
     janela.mainloop()
+    return resposta.get()

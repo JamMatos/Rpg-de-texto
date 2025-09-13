@@ -8,10 +8,7 @@ from models.jogador import Jogador
 from models.item_catalogo import itens
 
 prota = Jogador()
-prota.nome = registro()  # pylint: disable=E1111
-
-NIVEL = 1
-
+prota.nome = registro() #pylint: disable=E1111
 
 def verificar_status(jogador: object, nivel: int) -> bool:
     """Função para verificar status do jogo"""
@@ -31,7 +28,7 @@ def continuar():
 
 def atualizar_fluxo():
     """Gerencia os passos da história"""
-    if verificar_status(prota, NIVEL):
+    if verificar_status(prota, NIVEL.get()):
         janela.quit()
         return
 
@@ -43,7 +40,7 @@ def atualizar_fluxo():
         prota.ativar_item(itens["espada_madeira"])
         botao()
     elif cont == 2:
-        mostrar_mapa_tk(NIVEL, janela)
+        mostrar_mapa_tk(NIVEL.get(), janela)
         fluxo(janela, 2)
         botao()
     elif cont == 3:
@@ -52,9 +49,12 @@ def atualizar_fluxo():
         #botao()
         # Combate nivel 1
         botao2 = tk.Button(
-            janela, text="Lutar", command=lambda: primeiro_nivel(prota, NIVEL, janela)
+            janela, text="Lutar", command=lambda: primeiro_nivel(prota, NIVEL.get(), janela, CONT)
         )
         botao2.pack(pady=10)
+    elif cont == 4:
+        limpar_tela(janela)
+        fluxo(janela, 4)
 
 
 def botao():
@@ -63,15 +63,13 @@ def botao():
     btn.pack()
 
 
-while prota.vida > 0 and NIVEL != 0:
+while prota.vida > 0:
     janela = tk.Tk()
     janela.title("Jogo")
     janela.geometry("800x800")
     janela.config(bg="black")
 
-    # btn = continuar()
-    # btn.pack()
-
+    NIVEL = tk.IntVar(value=1)
     CONT = tk.IntVar(value=1)
 
     atualizar_fluxo()
